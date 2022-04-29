@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.player.Player;
 
-import java.util.Arrays;
-
 public class DevScreen implements Screen {
 
     final GalaxyConquerors game;
@@ -50,20 +48,20 @@ public class DevScreen implements Screen {
         bigShipTex = new Texture(Gdx.files.internal("other/big_ship.png"));
 
         flamesTex = new Texture(Gdx.files.internal("player/ship_flames_sheet.png"));
-        TextureRegion[][] tempFrames = TextureRegion.split(flamesTex, 16,16);
+        TextureRegion[][] tempFrames = TextureRegion.split(flamesTex, 16, 16);
         flamesAnimFrames = new TextureRegion[4];
         int index = 0;
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 1; j++){
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 1; j++) {
                 flamesAnimFrames[index++] = tempFrames[j][i];
             }
         }
-        flamesAnim = new Animation<TextureRegion>(1f/12f, flamesAnimFrames);
+        flamesAnim = new Animation<TextureRegion>(1f / 12f, flamesAnimFrames);
 
         player = new Player();
-        player.setPosition(new Vector2(213 - 8, 24 - 8));
+        player.setPosition(new Vector2(213, 16));
         player.setBounds(new Vector2(0, 426));
-        player.setRespawnPosition(new Vector2(213 - 8, 24 - 8));
+        player.setRespawnPosition(new Vector2(213, 16));
     }
 
     @Override
@@ -76,7 +74,7 @@ public class DevScreen implements Screen {
         player.update(delta);
 
         elapsedTime += delta;
-        ScreenUtils.clear(0,0,0,1);
+        ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
@@ -89,7 +87,7 @@ public class DevScreen implements Screen {
 //        game.batch.draw(gun2Tex, 213 - 8 + 32, 24 - 8 + 9, 16, 16);
 //        game.batch.draw(shipTex, 213 - 8 + 32, 24 - 8, 16, 16);
 
-        for(int i = 0; i < 12; i++) {
+        for (int i = 0; i < 12; i++) {
             game.batch.draw(alienTex, i * 24 + 88 - 8, 40 - 8 + 64, 16, 16);
             game.batch.draw(alien2Tex, i * 24 + 88 - 8, 64 - 8 + 64, 16, 16);
             game.batch.draw(alien3Tex, i * 24 + 88 - 8, 88 - 8 + 64, 16, 16);

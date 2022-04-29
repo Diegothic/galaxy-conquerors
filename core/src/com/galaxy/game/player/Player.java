@@ -49,6 +49,15 @@ public class Player {
     private float explosionTime;
     private boolean explosion;
 
+    private Texture projectileTexture;
+    private Animation<TextureRegion> projectileAnimation;
+    private Sprite projectileSprite;
+    private Vector2 projectilePosition;
+    private Vector2 projectileVelocity;
+    private float projectileTime;
+    private float shootingCd;
+    private float shootingCdBase;
+
     public Player() {
         texture = new Texture(Gdx.files.internal("player/ship.png"));
         sprite = new Sprite(texture);
@@ -106,6 +115,26 @@ public class Player {
         explosion = false;
         explosionPosition = new Vector2(0.0f, 0.0f);
         explosionRotation = 0.0f;
+
+        projectileTexture = new Texture(Gdx.files.internal("player/player_projectile_sheet.png"));
+        TextureRegion[][] tempFramesProjectile = TextureRegion.split(projectileTexture, 8, 8);
+        TextureRegion[] projectileAnimationFrames = new TextureRegion[7];
+        int indexProj = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (indexProj < 7) {
+                    projectileAnimationFrames[indexProj] = tempFramesProjectile[i][j];
+                }
+                indexProj++;
+            }
+        }
+        projectileAnimation = new Animation<>(1f / 12f, projectileAnimationFrames);
+        projectileSprite = new Sprite(projectileTexture, 8, 8);
+        projectilePosition = new Vector2(0.0f, 0.0f);
+        projectileVelocity = new Vector2(0.0f, 200.0f);
+        projectileTime = 0.0f;
+        shootingCd = 0.0f;
+        shootingCdBase = 1.0f;
     }
 
     public void update(float delta) {
@@ -144,15 +173,22 @@ public class Player {
         speed = Math.max(speed, -300.0f);
         position.x += speed * delta;
 
-        if (position.x <= bounds.x || position.x >= bounds.y - sprite.getWidth()) {
+        if (position.x - sprite.getWidth() / 2 <= bounds.x || position.x + sprite.getWidth() / 2 >= bounds.y) {
             speed *= -0.5f;
         }
-        position.x = Math.min(Math.max(position.x, bounds.x), bounds.y - sprite.getWidth());
+        position.x = Math.min(Math.max(position.x, bounds.x + sprite.getWidth() / 2), bounds.y - sprite.getWidth() / 2);
         rotation = Math.max(Math.min(rotation, 10.0f), -10.0f);
 
         if (Gdx.input.isKeyPressed(Input.Keys.H)) {
             if (!explosion) {
                 destroy();
+            }
+        }
+
+        if (explosion) {
+            explosionTime += delta;
+            if (explosionAnimation.isAnimationFinished(explosionTime)) {
+                explosion = false;
             }
         }
 
@@ -180,35 +216,49 @@ public class Player {
             color.set(1.0f, 1.0f - hurtAmount, 1.0f - hurtAmount, 1.0f);
         }
 
-        if (explosion) {
-            explosionTime += delta;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            if(shootingCd <= 0.0f){
+                shootingCd = shootingCdBase;
+                projectilePosition.set(position.x + shootingPoints[0].x, position.y + shootingPoints[0].y);
+                projectileTime = 0.0f;
+            }
+        }
+
+        if(shootingCd > 0.0f){
+            projectileTime += delta;
+            shootingCd -= delta;
+            projectilePosition.add(projectileVelocity.x * delta, projectileVelocity.y * delta);
         }
     }
 
     public void render(SpriteBatch batch) {
+        if(shootingCd > 0.0f){
+            projectileSprite.setRegion(projectileAnimation.getKeyFrame(projectileTime,true));
+            projectileSprite.setPosition(projectilePosition.x - projectileSprite.getWidth() / 2, projectilePosition.y - projectileSprite.getHeight() /2);
+            projectileSprite.draw(batch);
+        }
+
         flamesSprite.setRegion(flamesAnimation.getKeyFrame(elapsedTime, true));
-        flamesSprite.setPosition(position.x, position.y);
+        flamesSprite.setPosition(position.x - flamesSprite.getWidth() / 2, position.y - flamesSprite.getHeight() / 2);
         flamesSprite.setRotation(rotation);
         flamesSprite.setColor(color);
         flamesSprite.draw(batch);
 
-        gunSprite.setPosition(position.x + 0.0f, position.y + 9.0f);
+        gunSprite.setPosition(position.x + 0.0f - gunSprite.getWidth() / 2, position.y + 9.0f - gunSprite.getHeight() / 2);
         gunSprite.setColor(color);
         gunSprite.draw(batch);
 
-        sprite.setPosition(position.x, position.y);
+        sprite.setPosition(position.x - sprite.getWidth() / 2, position.y - sprite.getHeight() / 2);
         sprite.setRotation(rotation);
         sprite.setColor(color);
         sprite.draw(batch);
 
         if (explosion) {
             explosionSprite.setRegion(explosionAnimation.getKeyFrame(explosionTime, false));
-            explosionSprite.setPosition(explosionPosition.x, explosionPosition.y);
+            explosionSprite.setPosition(explosionPosition.x - explosionSprite.getWidth() / 2, explosionPosition.y - explosionSprite.getHeight() / 2);
             explosionSprite.setRotation(explosionRotation);
             explosionSprite.draw(batch);
-            if (explosionAnimation.isAnimationFinished(explosionTime)) {
-                explosion = false;
-            }
         }
     }
 
