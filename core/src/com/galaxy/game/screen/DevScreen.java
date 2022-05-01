@@ -59,7 +59,7 @@ public class DevScreen implements Screen {
         flamesAnim = new Animation<TextureRegion>(1f / 12f, flamesAnimFrames);
 
         player = new Player();
-        player.setPosition(new Vector2(213, 16));
+        player.position.set(213, 16);
         player.setBounds(new Vector2(0, 426));
         player.setRespawnPosition(new Vector2(213, 16));
     }
