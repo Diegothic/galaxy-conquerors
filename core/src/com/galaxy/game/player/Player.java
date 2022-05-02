@@ -26,7 +26,7 @@ public class Player {
 
     private final Texture gunTexture;
     private final Sprite gunSprite;
-    private final Vector2[] shootingPoints;
+    private final Vector2 shootingPoint;
 
     private final AnimatedSprite muzzleFlashSprite;
     private final AnimatedSprite projectileSprite;
@@ -66,8 +66,7 @@ public class Player {
         gunTexture = new Texture(Gdx.files.internal("player/gun_1.png"));
         gunSprite = new Sprite(gunTexture);
 
-        shootingPoints = new Vector2[1];
-        shootingPoints[0] = new Vector2(0.0f, 10.0f);
+        shootingPoint = new Vector2(0.0f, 10.0f);
 
         muzzleFlashSprite = new AnimatedSprite("player/player_projectile_shoot_sheet.png",
                 16, 16, 6,
@@ -126,7 +125,7 @@ public class Player {
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && shootingCd <= 0.0f) {
             shootingCd = shootingCdBase;
-            projectilePosition.set(position.x + shootingPoints[0].x, position.y + shootingPoints[0].y);
+            projectilePosition.set(position.x + shootingPoint.x, position.y + shootingPoint.y);
             projectileSprite.resetTimer();
             muzzleFlashSprite.resetTimer();
         }
@@ -182,8 +181,8 @@ public class Player {
 
         if (shootingCd > 0.0f && !muzzleFlashSprite.isAnimationFinished()) {
             muzzleFlashSprite.setPosition(
-                    position.x + shootingPoints[0].x - muzzleFlashSprite.getWidth() / 2,
-                    position.y + shootingPoints[0].y - muzzleFlashSprite.getHeight() / 2
+                    position.x + shootingPoint.x - muzzleFlashSprite.getWidth() / 2,
+                    position.y + shootingPoint.y - muzzleFlashSprite.getHeight() / 2
             );
             muzzleFlashSprite.draw(batch);
         }

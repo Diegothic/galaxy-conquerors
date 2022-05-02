@@ -5,7 +5,7 @@ import com.galaxy.game.GalaxyConquerors;
 
 public class ScoreboardScreen implements Screen {
 
-    final GalaxyConquerors game;
+    private final GalaxyConquerors game;
 
     public ScoreboardScreen(GalaxyConquerors game) {
         this.game = game;
