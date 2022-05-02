@@ -5,7 +5,7 @@ import com.galaxy.game.GalaxyConquerors;
 
 public class DevScreen implements Screen {
 
-    final GalaxyConquerors game;
+    private final GalaxyConquerors game;
 
     public DevScreen(GalaxyConquerors game) {
         this.game = game;

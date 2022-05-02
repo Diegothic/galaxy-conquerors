@@ -5,7 +5,7 @@ import com.galaxy.game.GalaxyConquerors;
 
 public class MainMenuScreen implements Screen {
 
-    final GalaxyConquerors game;
+    private final GalaxyConquerors game;
 
     public MainMenuScreen(GalaxyConquerors game) {
         this.game = game;
