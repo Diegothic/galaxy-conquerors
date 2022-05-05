@@ -1,4 +1,4 @@
-package com.galaxy.game.player;
+package com.galaxy.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -73,9 +73,9 @@ public class PlayerMovement {
     }
 
     private void neutralizeMovement(float delta) {
-        if (rotation > 0.0f) {
+        if (rotation > 1.0f) {
             rotation -= ROTATION_SPEED * delta;
-        } else if (rotation < 0.0f) {
+        } else if (rotation < -1.0f) {
             rotation += ROTATION_SPEED * delta;
         } else {
             rotation = 0.0f;
