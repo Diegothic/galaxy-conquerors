@@ -1,23 +1,22 @@
-package com.galaxy.game.player;
+package com.galaxy.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.galaxy.game.entity.Entity;
+import com.galaxy.game.entity.effects.Explosion;
 import com.galaxy.game.graphics.AnimatedSprite;
+import com.galaxy.game.level.GameLevel;
 
 import java.util.Random;
 
-public class Player {
+public class Player extends Entity {
 
     private final Texture texture;
     public final Sprite sprite;
-    public final Vector2 position;
-    public float rotation;
-    private final Color color;
 
     public final Vector2 bounds;
     private final PlayerMovement movement;
@@ -39,20 +38,13 @@ public class Player {
     private float respawnedDuration;
     private final float respawnedDurationBase;
 
-    private final AnimatedSprite explosionSprite;
-    private final Vector2 explosionPosition;
-    private float explosionRotation;
-    private boolean isExploding;
-
     private float elapsedTime;
     private final Random random;
 
-    public Player() {
+    public Player(int sortingLayer) {
+        super(sortingLayer);
         texture = new Texture(Gdx.files.internal("player/ship.png"));
         sprite = new Sprite(texture);
-        position = new Vector2(0.0f, 0.0f);
-        rotation = 0.0f;
-        color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
         movement = new PlayerMovement(this);
         bounds = new Vector2(Float.MIN_VALUE, Float.MAX_VALUE);
@@ -86,32 +78,29 @@ public class Player {
         respawnedDuration = 0.0f;
         respawnedDurationBase = 1.0f;
 
-        explosionSprite = new AnimatedSprite("other/explosion_sheet.png",
-                16, 16, 8,
-                1.0f / 12.0f
-        );
-        explosionPosition = new Vector2(0.0f, 0.0f);
-        explosionRotation = 0.0f;
-        isExploding = false;
-
         elapsedTime = 0.0f;
         random = new Random();
     }
 
-    public void update(final float delta) {
+    @Override
+    public void onSpawn(GameLevel level) {
+        super.onSpawn(level);
+        float levelWidth = getLevel().size.x;
+        position.set(levelWidth / 2, 16);
+        setBounds(0, levelWidth);
+        setRespawnPosition(new Vector2(levelWidth / 2, 16));
+        respawn();
+    }
+
+    @Override
+    public void onUpdate(final float delta) {
+        super.onUpdate(delta);
         elapsedTime += delta;
         movement.update(delta);
         flamesSprite.step(delta);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.H) && !isExploding) {
-            destroy();
-        }
-
-        if (isExploding) {
-            explosionSprite.step(delta);
-            if (explosionSprite.isAnimationFinished()) {
-                isExploding = false;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.H)) {
+            explode();
         }
 
         color.set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -138,7 +127,9 @@ public class Player {
         }
     }
 
-    public void render(SpriteBatch batch) {
+    @Override
+    public void onRender(SpriteBatch batch) {
+        super.onRender(batch);
         if (shootingCd > 0.0f) {
             projectileSprite.setPosition(
                     projectilePosition.x - projectileSprite.getWidth() / 2,
@@ -170,15 +161,6 @@ public class Player {
         sprite.setColor(color);
         sprite.draw(batch);
 
-        if (isExploding) {
-            explosionSprite.setPosition(
-                    explosionPosition.x - explosionSprite.getWidth() / 2,
-                    explosionPosition.y - explosionSprite.getHeight() / 2
-            );
-            explosionSprite.setRotation(explosionRotation);
-            explosionSprite.draw(batch);
-        }
-
         if (shootingCd > 0.0f && !muzzleFlashSprite.isAnimationFinished()) {
             muzzleFlashSprite.setPosition(
                     position.x + shootingPoint.x - muzzleFlashSprite.getWidth() / 2,
@@ -188,24 +170,25 @@ public class Player {
         }
     }
 
-    public void dispose() {
+    @Override
+    public void onDispose() {
+        super.onDispose();
         texture.dispose();
         flamesSprite.dispose();
         gunTexture.dispose();
-        explosionSprite.dispose();
         projectileSprite.dispose();
         muzzleFlashSprite.dispose();
     }
 
-    public void setBounds(Vector2 newBounds) {
-        bounds.set(newBounds);
+    public void setBounds(float min, float max) {
+        bounds.set(min, max);
     }
 
-    public void destroy() {
-        explosionPosition.set(position);
-        explosionRotation = random.nextFloat() * 360.0f;
-        explosionSprite.resetTimer();
-        isExploding = true;
+    public void explode() {
+        Explosion explosion = new Explosion(999);
+        explosion.position.set(position);
+        explosion.rotation = random.nextFloat() * 360.0f;
+        getLevel().spawn(explosion);
         respawn();
     }
 

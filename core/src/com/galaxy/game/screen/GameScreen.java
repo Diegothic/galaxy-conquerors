@@ -2,10 +2,10 @@ package com.galaxy.game.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
-import com.galaxy.game.player.Player;
+import com.galaxy.game.level.GameLevel;
+import com.galaxy.game.level.Level_1;
 
 public class GameScreen implements Screen {
 
@@ -14,43 +14,37 @@ public class GameScreen implements Screen {
 
     private final GalaxyConquerors game;
     private final OrthographicCamera camera;
-
-    private final Player player;
+    private final GameLevel level;
 
     public GameScreen(GalaxyConquerors game) {
         this.game = game;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-
-        player = new Player();
-        player.position.set(213, 16);
-        player.setBounds(new Vector2(0, 426));
-        player.setRespawnPosition(new Vector2(213, 16));
+        level = new Level_1(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
     }
 
     @Override
     public void show() {
-        player.respawn();
+        level.start();
     }
 
     @Override
     public void render(float delta) {
-        player.update(delta);
-
+        level.update(delta);
         ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-
-        player.render(game.batch);
-
+        level.render(game.batch);
         game.batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        float newHeight = VIEWPORT_WIDTH * ((float) height / (float) width);
+        camera.viewportWidth = VIEWPORT_WIDTH;
+        camera.viewportHeight = newHeight;
+        camera.update();
     }
 
     @Override
@@ -70,6 +64,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        player.dispose();
+        level.dispose();
     }
 }
