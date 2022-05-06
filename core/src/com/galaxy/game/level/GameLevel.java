@@ -10,14 +10,18 @@ import java.util.List;
 
 public class GameLevel {
 
+    private static final int INIT_ENTITY_CAPACITY = 128;
+
     public final Vector2 size;
     private final List<Entity> entities;
     private final List<Entity> entitiesToSpawn;
+    private final List<Entity> spawnedEntities;
 
     public GameLevel(int width, int height) {
         this.size = new Vector2(width, height);
-        entities = new ArrayList<>(128);
-        entitiesToSpawn = new ArrayList<>(128);
+        entities = new ArrayList<>(INIT_ENTITY_CAPACITY);
+        entitiesToSpawn = new ArrayList<>(INIT_ENTITY_CAPACITY);
+        spawnedEntities = new ArrayList<>(INIT_ENTITY_CAPACITY);
     }
 
     public void start() {
@@ -36,9 +40,11 @@ public class GameLevel {
     }
 
     private void handleSpawnRequests() {
-        entities.addAll(entitiesToSpawn);
-        entitiesToSpawn.forEach(entity -> entity.onSpawn(this));
+        spawnedEntities.addAll(entitiesToSpawn);
         entitiesToSpawn.clear();
+        spawnedEntities.forEach(entity -> entity.onSpawn(this));
+        entities.addAll(spawnedEntities);
+        spawnedEntities.clear();
     }
 
     private void handleRemoveRequests() {
