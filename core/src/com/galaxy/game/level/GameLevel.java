@@ -1,6 +1,7 @@
 package com.galaxy.game.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.Entity;
 
@@ -56,6 +57,11 @@ public class GameLevel {
         entities.stream()
                 .sorted(Comparator.comparingInt(Entity::getSortingLayer))
                 .forEach(entity -> entity.onRender(batch));
+    }
+
+    public void renderDebug(ShapeRenderer renderer) {
+        entities.stream()
+                .forEach(entity -> entity.onDebugRender(renderer));
     }
 
     public void dispose() {
