@@ -8,6 +8,7 @@ import com.galaxy.game.screen.DevScreen;
 public class GalaxyConquerors extends Game {
 
     public SpriteBatch batch;
+    public ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
