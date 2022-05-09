@@ -8,7 +8,7 @@ public class Level_1 extends GameLevel {
 
     public Level_1(int width, int height) {
         super(width, height);
-        player = new Player(1);
+        player = new Player();
     }
 
     @Override

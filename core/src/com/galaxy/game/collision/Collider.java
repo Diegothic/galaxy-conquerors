@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.Entity;
+import com.galaxy.game.entity.SortingLayer;
 
 import java.util.function.Consumer;
 
@@ -18,7 +19,7 @@ public class Collider extends Entity {
     public boolean enabled;
 
     public Collider(Entity parent, float width, float height, float offsetX, float offsetY) {
-        super(Integer.MAX_VALUE);
+        super(SortingLayer.COLLISION);
         this.parent = parent;
         if (parent != null) {
             position.set(parent.position);
