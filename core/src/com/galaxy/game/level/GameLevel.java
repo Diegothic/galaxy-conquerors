@@ -47,6 +47,9 @@ public class GameLevel {
     }
 
     private void handleSpawnRequests() {
+        if (entitiesToSpawn.isEmpty()) {
+            return;
+        }
         spawnedEntities.addAll(entitiesToSpawn);
         entitiesToSpawn.clear();
         spawnedEntities.forEach(entity -> entity.onSpawn(this));
