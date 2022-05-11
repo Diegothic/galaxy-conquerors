@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class GameLevel {
+public abstract class GameLevel {
 
     private static final int INIT_ENTITY_CAPACITY = 128;
 
@@ -33,9 +33,7 @@ public class GameLevel {
         handleSpawnRequests();
     }
 
-    protected void initLevel() {
-
-    }
+    protected abstract void initLevel();
 
     public void update(float delta) {
         handleSpawnRequests();

@@ -71,7 +71,7 @@ public class Player extends Entity {
         setBounds(0, levelWidth);
         setRespawnPosition(new Vector2(levelWidth / 2, 16));
         respawn();
-        var collider = new Collider(this, 15.0f, 15.0f, 0.0f, 0.0f);
+        var collider = new Collider(this, new Vector2(15.0f, 15.0f));
         getLevel().spawn(collider);
     }
 

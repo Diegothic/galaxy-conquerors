@@ -1,6 +1,7 @@
 package com.galaxy.game.entity.projectile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.graphics.AnimatedSprite;
@@ -10,14 +11,14 @@ public class PlayerProjectile extends Projectile {
     private final AnimatedSprite sprite;
 
     public PlayerProjectile(float speed, float lifetime) {
-        super(0.0f, 1.0f, speed, 4.0f, 6.0f, lifetime);
+        super(0.0f, 1.0f, speed, new Vector2(4.0f, 6.0f), lifetime);
         sprite = new AnimatedSprite("player/player_projectile_sheet.png",
                 8, 8, 7,
                 1.0f / 12.0f
         );
         sprite.setLooping(true);
         setOnCollision(other -> {
-            if(other.getParent() instanceof Enemy){
+            if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);

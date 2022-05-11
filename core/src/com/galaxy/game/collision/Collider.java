@@ -11,38 +11,31 @@ import java.util.function.Consumer;
 
 public class Collider extends Entity {
 
-    private final Entity parent;
     private final Rectangle box;
-    private final Vector2 offset;
     private Consumer<Collider> onCollisionFunction;
-
     public boolean enabled;
 
-    public Collider(Entity parent, float width, float height, float offsetX, float offsetY) {
+    public Collider(Entity parent, Vector2 size, Vector2 offset) {
         super(SortingLayer.COLLISION);
-        this.parent = parent;
         if (parent != null) {
+            attachTo(parent, offset);
             position.set(parent.position);
         }
-        offset = new Vector2(offsetX, offsetY);
         box = new Rectangle();
-        box.setWidth(width);
-        box.setHeight(height);
+        box.setWidth(size.x);
+        box.setHeight(size.y);
         box.setPosition(position.x + offset.x, position.y + offset.y);
         enabled = true;
     }
 
-    public Collider(Entity parent, float width, float height) {
-        this(parent, width, height, 0.0f, 0.0f);
+    public Collider(Entity parent, Vector2 size) {
+        this(parent, size, new Vector2());
     }
 
     @Override
     public void onUpdate(float delta) {
         super.onUpdate(delta);
-        if (parent != null) {
-            position.set(parent.position.x - box.getWidth() / 2.0f, parent.position.y - box.getHeight() / 2.0f);
-        }
-        box.setPosition(position.x + offset.x, position.y + offset.y);
+        box.setPosition(position.x - box.getWidth() / 2.0f, position.y - box.getHeight() / 2.0f);
     }
 
     @Override
@@ -62,14 +55,6 @@ public class Collider extends Entity {
         super.onDispose();
     }
 
-    @Override
-    public boolean removalRequested() {
-        if (parent != null && parent.removalRequested()) {
-            return true;
-        }
-        return super.removalRequested();
-    }
-
     public boolean overlaps(Collider other) {
         return box.overlaps(other.box);
     }
@@ -84,9 +69,4 @@ public class Collider extends Entity {
         }
         onCollisionFunction.accept(other);
     }
-
-    public Entity getParent() {
-        return parent;
-    }
-
 }

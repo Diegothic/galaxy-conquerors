@@ -8,18 +8,18 @@ import com.galaxy.game.level.GameLevel;
 
 import java.util.function.Consumer;
 
-public class Projectile extends Entity {
+public abstract class Projectile extends Entity {
 
     private final Vector2 direction;
     private final float speed;
     private float lifetime;
     protected final Collider collider;
 
-    public Projectile(float directionX, float directionY, float speed, float width, float height, float lifetime) {
+    public Projectile(float directionX, float directionY, float speed, Vector2 size, float lifetime) {
         super(SortingLayer.PROJECTILES);
         this.direction = new Vector2(directionX, directionY);
         this.speed = speed;
-        this.collider = new Collider(this, width, height);
+        this.collider = new Collider(this, size);
         this.lifetime = lifetime;
     }
 

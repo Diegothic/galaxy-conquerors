@@ -1,6 +1,5 @@
 package com.galaxy.game.level;
 
-import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.entity.player.Player;
 
@@ -16,11 +15,11 @@ public class Level_1 extends GameLevel {
     public Level_1(int width, int height) {
         super(width, height);
         player = new Player();
-        for(int i = 0; i < numberOfCollumns; i++){
-            for(int j = 0; j < numberOfRows; j++){
+        for (int i = 0; i < numberOfCollumns; i++) {
+            for (int j = 0; j < numberOfRows; j++) {
                 int x = i * enemySpace + borderOffset + enemySpaceOffset;
                 int y = 200 - j * enemySpace;
-                Enemy enemy = new Enemy(SortingLayer.ENEMIES, x, y, "alien/alien_"+ (j+1) +".png");
+                Enemy enemy = new Enemy(x, y, "alien/alien_" + (j + 1) + ".png");
                 spawn(enemy);
             }
         }

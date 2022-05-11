@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
+import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.level.GameLevel;
 
 import java.util.Random;
@@ -29,8 +30,8 @@ public class Enemy extends Entity {
 
     private final Random random;
 
-    public Enemy(int sortingLayer, int x, int y, String pathToSprate) {
-        super(sortingLayer);
+    public Enemy(int x, int y, String pathToSprate) {
+        super(SortingLayer.ENEMIES);
         position.x = x;
         position.y = y;
         texture = new Texture(Gdx.files.internal(pathToSprate));
@@ -43,14 +44,14 @@ public class Enemy extends Entity {
     }
 
     @Override
-    public void onSpawn(GameLevel level){
+    public void onSpawn(GameLevel level) {
         super.onSpawn(level);
-        Collider enemyCollider = new Collider(this, 16, 16);
+        Collider enemyCollider = new Collider(this, new Vector2(16.0f, 16.0f));
         level.spawn(enemyCollider);
     }
 
     @Override
-    public void onRender(SpriteBatch batch){
+    public void onRender(SpriteBatch batch) {
         super.onRender(batch);
         sprite.setPosition(
                 position.x - sprite.getWidth() / 2,
@@ -60,19 +61,19 @@ public class Enemy extends Entity {
     }
 
     @Override
-    public void onUpdate(float delta){
+    public void onUpdate(float delta) {
         movementTimer += delta;
         shootingTimer += delta;
-        if(movementTimer >= movementCd){
+        if (movementTimer >= movementCd) {
             movementTimer = 0f;
             currentOffset += velocity.x;
             int isMovingDown = 0;
-            if(currentOffset == maxOffset || currentOffset == 0){
+            if (currentOffset == maxOffset || currentOffset == 0) {
                 currentOffset = 0;
                 movementDirection *= -1;
                 numberOfStepsDown++;
                 int maxNumberOfStepsDown = 4;
-                if(numberOfStepsDown <= maxNumberOfStepsDown) {
+                if (numberOfStepsDown <= maxNumberOfStepsDown) {
                     isMovingDown = -1;
                 }
             }
@@ -80,11 +81,11 @@ public class Enemy extends Entity {
             position.y += isMovingDown * velocity.y;
         }
 
-        if(shootingTimer >= shootingCD){
+        if (shootingTimer >= shootingCD) {
             shootingCD = random.nextFloat() * 3f + 1f;
             shootingTimer = 0;
             float chance = random.nextFloat();
-            if(chance >= shootingChance){
+            if (chance >= shootingChance) {
                 // spawn projectile and do stuff
             }
         }
