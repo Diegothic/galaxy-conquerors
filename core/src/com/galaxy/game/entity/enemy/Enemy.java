@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
 import com.galaxy.game.entity.SortingLayer;
+import com.galaxy.game.entity.effects.EnemyMuzzleFlashEffect;
+import com.galaxy.game.entity.projectile.EnemyProjectile;
 import com.galaxy.game.level.GameLevel;
 
 import java.util.Random;
@@ -18,7 +20,7 @@ public class Enemy extends Entity {
 
     private final int maxOffset = 154;
     private int currentOffset = 0;
-    private float movementCd = .2f;
+    private float movementCd = 0.2f;
     private float movementTimer = 0f;
     private Vector2 velocity;
     private int movementDirection = 1;
@@ -26,7 +28,8 @@ public class Enemy extends Entity {
 
     private float shootingCD;
     private float shootingTimer = 0f;
-    private final float shootingChance = .005f;
+    private final float shootingChance = 0.1f;
+    private final Vector2 shootingOffset;
 
     private final Random random;
 
@@ -41,6 +44,7 @@ public class Enemy extends Entity {
         random = new Random();
 
         shootingCD = random.nextFloat() * 3f + 1f;
+        shootingOffset = new Vector2(0.0f, -8.0f);
     }
 
     @Override
@@ -85,9 +89,20 @@ public class Enemy extends Entity {
             shootingCD = random.nextFloat() * 3f + 1f;
             shootingTimer = 0;
             float chance = random.nextFloat();
-            if (chance >= shootingChance) {
-                // spawn projectile and do stuff
+            if (chance <= shootingChance) {
+                shoot();
             }
         }
+    }
+
+    private void shoot() {
+        var muzzleFlash = new EnemyMuzzleFlashEffect(this, shootingOffset);
+        getLevel().spawn(muzzleFlash);
+        var projectile = new EnemyProjectile();
+        projectile.position.set(
+                position.x + shootingOffset.x,
+                position.y + shootingOffset.y
+        );
+        getLevel().spawn(projectile);
     }
 }
