@@ -62,8 +62,8 @@ public class GameLevel {
 
     private void handleRemoveRequests() {
         entities.stream().filter(Entity::removalRequested).forEach(Entity::onDispose);
-        entities.removeIf(Entity::removalRequested);
         colliders.removeIf(Collider::removalRequested);
+        entities.removeIf(Entity::removalRequested);
     }
 
     public void render(SpriteBatch batch) {

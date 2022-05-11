@@ -62,6 +62,14 @@ public class Collider extends Entity {
         super.onDispose();
     }
 
+    @Override
+    public boolean removalRequested() {
+        if (parent != null && parent.removalRequested()) {
+            return true;
+        }
+        return super.removalRequested();
+    }
+
     public boolean overlaps(Collider other) {
         return box.overlaps(other.box);
     }
