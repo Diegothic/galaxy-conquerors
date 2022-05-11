@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
 import com.galaxy.game.entity.SortingLayer;
+import com.galaxy.game.entity.effects.EnemyExplosionEffect;
 import com.galaxy.game.entity.effects.EnemyMuzzleFlashEffect;
 import com.galaxy.game.entity.projectile.EnemyProjectile;
 import com.galaxy.game.level.GameLevel;
@@ -93,6 +94,15 @@ public class Enemy extends Entity {
                 shoot();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        var explosion = new EnemyExplosionEffect();
+        explosion.position.set(position);
+        explosion.rotation = random.nextFloat() * 360.0f;
+        getLevel().spawn(explosion);
     }
 
     private void shoot() {
