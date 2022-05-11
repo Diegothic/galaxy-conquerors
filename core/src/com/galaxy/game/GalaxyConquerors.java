@@ -26,7 +26,14 @@ public class GalaxyConquerors extends Game {
     @Override
     public void render() {
         super.render();
+        handleExit();
         handleFullscreen();
+    }
+
+    private void handleExit() {
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
     }
 
     private void handleFullscreen() {
