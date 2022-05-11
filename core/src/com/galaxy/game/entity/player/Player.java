@@ -137,6 +137,9 @@ public class Player extends Entity {
     }
 
     public void explode() {
+        if (respawnedDuration > 0.0f) {
+            return;
+        }
         var explosion = new ExplosionEffect();
         explosion.position.set(position);
         explosion.rotation = random.nextFloat() * 360.0f;
