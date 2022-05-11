@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
 import com.galaxy.game.entity.SortingLayer;
-import com.galaxy.game.entity.effects.Explosion;
-import com.galaxy.game.entity.projectile.PlayerProjectile;
+import com.galaxy.game.entity.effects.ExplosionEffect;
 import com.galaxy.game.graphics.AnimatedSprite;
 import com.galaxy.game.level.GameLevel;
 
@@ -27,11 +27,7 @@ public class Player extends Entity {
 
     private final Texture gunTexture;
     private final Sprite gunSprite;
-    private final Vector2 shootingPoint;
-
-    private final AnimatedSprite muzzleFlashSprite;
-    private float shootingCd;
-    private final float shootingCdBase;
+    private final PlayerShooting shooting;
 
     private final Vector2 respawnPosition;
     private float respawnedDuration;
@@ -57,14 +53,7 @@ public class Player extends Entity {
         gunTexture = new Texture(Gdx.files.internal("player/gun_1.png"));
         gunSprite = new Sprite(gunTexture);
 
-        shootingPoint = new Vector2(0.0f, 10.0f);
-
-        muzzleFlashSprite = new AnimatedSprite("player/player_projectile_shoot_sheet.png",
-                16, 16, 6,
-                1.0f / 24.0f
-        );
-        shootingCd = 0.0f;
-        shootingCdBase = 1.0f;
+        shooting = new PlayerShooting(this, new Vector2(0.0f, 10.0f), 1.0f);
 
         respawnPosition = new Vector2(0.0f, 0.0f);
         respawnedDuration = 0.0f;
@@ -82,6 +71,8 @@ public class Player extends Entity {
         setBounds(0, levelWidth);
         setRespawnPosition(new Vector2(levelWidth / 2, 16));
         respawn();
+        var collider = new Collider(this, 15.0f, 15.0f, 0.0f, 0.0f);
+        getLevel().spawn(collider);
     }
 
     @Override
@@ -89,6 +80,7 @@ public class Player extends Entity {
         super.onUpdate(delta);
         elapsedTime += delta;
         movement.update(delta);
+        shooting.update(delta);
         flamesSprite.step(delta);
 
         if (Gdx.input.isKeyPressed(Input.Keys.H)) {
@@ -102,19 +94,6 @@ public class Player extends Entity {
             float respawnAmount = respawnedDuration / respawnedDurationBase;
             float respawnIntensity = (float) (((Math.sin(elapsedTime * 100.0f) + 1.0f) / 2.0f)) * respawnAmount;
             color.set(1.0f - respawnIntensity, 1.0f - respawnIntensity, 1.0f, 1.0f - respawnAmount);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && shootingCd <= 0.0f) {
-            shootingCd = shootingCdBase;
-            var projectile = new PlayerProjectile(200.0f, 3.0f);
-            projectile.position.set(position.x + shootingPoint.x, position.y + shootingPoint.y);
-            getLevel().spawn(projectile);
-            muzzleFlashSprite.resetTimer();
-        }
-
-        if (shootingCd > 0.0f) {
-            shootingCd -= delta;
-            muzzleFlashSprite.step(delta);
         }
     }
 
@@ -143,14 +122,6 @@ public class Player extends Entity {
         sprite.setRotation(rotation);
         sprite.setColor(color);
         sprite.draw(batch);
-
-        if (shootingCd > 0.0f && !muzzleFlashSprite.isAnimationFinished()) {
-            muzzleFlashSprite.setPosition(
-                    position.x + shootingPoint.x - muzzleFlashSprite.getWidth() / 2,
-                    position.y + shootingPoint.y - muzzleFlashSprite.getHeight() / 2
-            );
-            muzzleFlashSprite.draw(batch);
-        }
     }
 
     @Override
@@ -159,7 +130,6 @@ public class Player extends Entity {
         texture.dispose();
         flamesSprite.dispose();
         gunTexture.dispose();
-        muzzleFlashSprite.dispose();
     }
 
     public void setBounds(float min, float max) {
@@ -167,7 +137,7 @@ public class Player extends Entity {
     }
 
     public void explode() {
-        Explosion explosion = new Explosion();
+        var explosion = new ExplosionEffect();
         explosion.position.set(position);
         explosion.rotation = random.nextFloat() * 360.0f;
         getLevel().spawn(explosion);

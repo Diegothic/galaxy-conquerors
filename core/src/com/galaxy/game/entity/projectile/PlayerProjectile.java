@@ -1,7 +1,8 @@
 package com.galaxy.game.entity.projectile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.galaxy.game.entity.player.Player;
+import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
+import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.graphics.AnimatedSprite;
 
 public class PlayerProjectile extends Projectile {
@@ -9,21 +10,18 @@ public class PlayerProjectile extends Projectile {
     private final AnimatedSprite sprite;
 
     public PlayerProjectile(float speed, float lifetime) {
-        super(0.0f, 1.0f, speed, 8.0f, 8.0f, lifetime);
+        super(0.0f, 1.0f, speed, 4.0f, 6.0f, lifetime);
         sprite = new AnimatedSprite("player/player_projectile_sheet.png",
                 8, 8, 7,
                 1.0f / 12.0f
         );
         sprite.setLooping(true);
         setOnCollision(other -> {
-            if (other.getParent() instanceof Player) {
-                return;
+            if(other.getParent() instanceof Enemy){
+                collider.enabled = false;
+                getLevel().destroy(other.getParent());
+                getLevel().destroy(this);
             }
-            if (other.getParent() instanceof Projectile) {
-                return;
-            }
-            //TODO:: Destroy other if others parent is Enemy :: Enemy class required
-            getLevel().destroy(this);
         });
     }
 
@@ -46,7 +44,10 @@ public class PlayerProjectile extends Projectile {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //TODO:: Explosion
+        var hitEffect = new PlayerProjectileHitEffect();
+        hitEffect.position.set(position);
+        hitEffect.position.y += sprite.getHeight() / 2.0f;
+        getLevel().spawn(hitEffect);
     }
 
     @Override

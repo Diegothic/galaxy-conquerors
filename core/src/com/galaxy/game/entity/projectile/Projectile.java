@@ -12,8 +12,8 @@ public class Projectile extends Entity {
 
     private final Vector2 direction;
     private final float speed;
-    private final Collider collider;
     private float lifetime;
+    protected final Collider collider;
 
     public Projectile(float directionX, float directionY, float speed, float width, float height, float lifetime) {
         super(SortingLayer.PROJECTILES);
