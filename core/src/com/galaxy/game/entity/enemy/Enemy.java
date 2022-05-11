@@ -29,7 +29,7 @@ public class Enemy extends Entity {
 
     private float shootingCD;
     private float shootingTimer = 0f;
-    private final float shootingChance = 0.1f;
+    private final float shootingChance = 0.15f;
     private final Vector2 shootingOffset;
 
     private final Random random;
@@ -44,7 +44,7 @@ public class Enemy extends Entity {
 
         random = new Random();
 
-        shootingCD = random.nextFloat() * 3f + 1f;
+        shootingCD = random.nextFloat() * 3f + .2f;
         shootingOffset = new Vector2(0.0f, -8.0f);
     }
 
@@ -87,7 +87,7 @@ public class Enemy extends Entity {
         }
 
         if (shootingTimer >= shootingCD) {
-            shootingCD = random.nextFloat() * 3f + 1f;
+            shootingCD = random.nextFloat() * 3f + .2f;
             shootingTimer = 0;
             float chance = random.nextFloat();
             if (chance <= shootingChance) {
