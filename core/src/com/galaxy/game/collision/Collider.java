@@ -55,7 +55,6 @@ public class Collider extends Entity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        enabled = false;
     }
 
     @Override
