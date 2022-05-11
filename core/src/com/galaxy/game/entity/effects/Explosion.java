@@ -2,6 +2,7 @@ package com.galaxy.game.entity.effects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.galaxy.game.entity.Entity;
+import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.graphics.AnimatedSprite;
 import com.galaxy.game.level.GameLevel;
 
@@ -9,8 +10,8 @@ public class Explosion extends Entity {
 
     private final AnimatedSprite sprite;
 
-    public Explosion(int sortingLayer) {
-        super(sortingLayer);
+    public Explosion() {
+        super(SortingLayer.EFFECTS);
         sprite = new AnimatedSprite("other/explosion_sheet.png",
                 16, 16, 8,
                 1.0f / 12.0f

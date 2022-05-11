@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
+import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.entity.effects.Explosion;
 import com.galaxy.game.graphics.AnimatedSprite;
 import com.galaxy.game.level.GameLevel;
@@ -41,8 +43,8 @@ public class Player extends Entity {
     private float elapsedTime;
     private final Random random;
 
-    public Player(int sortingLayer) {
-        super(sortingLayer);
+    public Player() {
+        super(SortingLayer.PLAYER);
         texture = new Texture(Gdx.files.internal("player/ship.png"));
         sprite = new Sprite(texture);
 
@@ -91,6 +93,7 @@ public class Player extends Entity {
         setRespawnPosition(new Vector2(levelWidth / 2, 16));
         respawn();
     }
+
 
     @Override
     public void onUpdate(final float delta) {
@@ -185,7 +188,7 @@ public class Player extends Entity {
     }
 
     public void explode() {
-        Explosion explosion = new Explosion(999);
+        Explosion explosion = new Explosion();
         explosion.position.set(position);
         explosion.rotation = random.nextFloat() * 360.0f;
         getLevel().spawn(explosion);
