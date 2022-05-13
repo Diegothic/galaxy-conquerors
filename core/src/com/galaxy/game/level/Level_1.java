@@ -1,11 +1,14 @@
 package com.galaxy.game.level;
 
+import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.entity.player.Player;
+import com.galaxy.game.entity.ship.Ship;
 
 public class Level_1 extends GameLevel {
 
     private final Player player;
+    private final Ship ship;
     private final int numberOfRows = 4;
     private final int numberOfCollumns = 12;
     private final int enemySpace = 20;
@@ -16,12 +19,14 @@ public class Level_1 extends GameLevel {
     public Level_1(int width, int height) {
         super(width, height);
         player = new Player();
+        ship = new Ship(SortingLayer.SHIP);
         parseSeed();
     }
 
     @Override
     protected void initLevel() {
         spawn(player);
+        spawn(ship);
     }
 
     private void parseSeed(){
@@ -31,7 +36,7 @@ public class Level_1 extends GameLevel {
             char point = seed.charAt(i);
             if(point == 'o' || point == 'b' || point == 'g' || point == 'r'){
                 int posX = x * enemySpace + borderOffset + enemySpaceOffset;
-                int posY = 200 - y * enemySpace;
+                int posY = 190 - y * enemySpace;
                 Enemy enemy;
                 switch (point){
                     case 'o':
