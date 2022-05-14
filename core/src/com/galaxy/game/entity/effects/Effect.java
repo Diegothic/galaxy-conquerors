@@ -6,15 +6,17 @@ import com.galaxy.game.entity.SortingLayer;
 import com.galaxy.game.graphics.AnimatedSprite;
 import com.galaxy.game.level.GameLevel;
 
-public class Explosion extends Entity {
+public abstract class Effect extends Entity {
 
-    private final AnimatedSprite sprite;
+    public final AnimatedSprite sprite;
 
-    public Explosion() {
+    public Effect(String spriteSheetPath, int tileWidth, int tileHeight, int tileCount, float frameDuration) {
         super(SortingLayer.EFFECTS);
-        sprite = new AnimatedSprite("other/explosion_sheet.png",
-                16, 16, 8,
-                1.0f / 12.0f
+        sprite = new AnimatedSprite(spriteSheetPath,
+                tileWidth,
+                tileHeight,
+                tileCount,
+                frameDuration
         );
     }
 
