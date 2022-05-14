@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.galaxy.game.screen.DevScreen;
+import com.galaxy.game.screen.GameScreen;
 
 public class GalaxyConquerors extends Game {
 
@@ -20,7 +21,7 @@ public class GalaxyConquerors extends Game {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         isFullscreen = false;
-        this.setScreen(new DevScreen(this));
+        this.setScreen(new GameScreen(this));
     }
 
     @Override

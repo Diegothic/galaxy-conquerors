@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.graphics.AnimatedSprite;
+import com.galaxy.game.util.Score;
 
 public class PlayerProjectile extends Projectile {
 
@@ -20,6 +21,7 @@ public class PlayerProjectile extends Projectile {
         setOnCollision(other -> {
             if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
+                Score.addScore();
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
             }

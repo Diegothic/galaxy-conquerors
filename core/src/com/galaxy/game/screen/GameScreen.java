@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.level.GameLevel;
 import com.galaxy.game.level.Level_1;
+import com.galaxy.game.util.Font;
+import com.galaxy.game.util.Score;
 
 public class GameScreen implements Screen {
 
@@ -18,6 +20,7 @@ public class GameScreen implements Screen {
     private final GalaxyConquerors game;
     private final OrthographicCamera camera;
     private final GameLevel level;
+    private Font score;
 
     private boolean drawDebug;
     private boolean debugButtonPressed;
@@ -28,6 +31,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         level = new Level_1(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         drawDebug = false;
+        score = new Font(15);
     }
 
     @Override
@@ -47,6 +51,7 @@ public class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
+        score.font.draw(game.batch, "score: " + Score.getScore(),0,235);
         level.render(game.batch);
         game.batch.end();
         if (drawDebug) {
