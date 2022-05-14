@@ -30,7 +30,7 @@ public class GalaxyConquerors extends Game {
         super.render();
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && isMainMenu){
             isMainMenu = false;
-            this.screen.hide();
+            this.screen.dispose();
             this.setScreen(new GameScreen(this));
         }
     }

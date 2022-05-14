@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.galaxy.game.GalaxyConquerors;
+import com.galaxy.game.util.FloatUtils;
 import com.galaxy.game.util.Font;
 
 import java.util.logging.Handler;
@@ -21,8 +22,6 @@ public class MainMenuScreen implements Screen {
     private final GalaxyConquerors game;
     private Font title, startText;
     private SpriteBatch batch;
-
-
     private final OrthographicCamera camera;
 
     public MainMenuScreen(GalaxyConquerors game) {
@@ -32,6 +31,7 @@ public class MainMenuScreen implements Screen {
         title = new Font(25);
         startText = new Font(10);
         batch = new SpriteBatch();
+        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -41,18 +41,17 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-    batch.setProjectionMatrix(camera.combined);
-
     batch.begin();
-    if (delta % 10000 == 0) {
-        title.font.draw(batch, "GALAXY CONQUERORS", 15, 220);
-        startText.font.draw(batch, "PRESS SPACE TO START", 100, 60); //epilepsja hardo
-    }
+     title.font.draw(batch, "GALAXY CONQUERORS", 15, 220);
+     startText.font.draw(batch, "PRESS SPACE TO START", 100, 60); //epilepsja hardo
     batch.end();
     }
 
     public void resize(int width, int height) {
-
+        float newHeight = VIEWPORT_WIDTH * ((float) height / (float) width);
+        camera.viewportWidth = VIEWPORT_WIDTH;
+        camera.viewportHeight = newHeight;
+        camera.update();
     }
 
     @Override
