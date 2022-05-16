@@ -2,6 +2,7 @@ package com.galaxy.game.screen;
 
 import com.badlogic.gdx.Screen;
 import com.galaxy.game.GalaxyConquerors;
+import com.galaxy.game.score.Scoreboard;
 
 public class DevScreen implements Screen {
 
@@ -9,6 +10,7 @@ public class DevScreen implements Screen {
 
     public DevScreen(GalaxyConquerors game) {
         this.game = game;
+        Scoreboard scoreboard = new Scoreboard();
     }
 
     @Override
@@ -18,6 +20,7 @@ public class DevScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
 
     }
 
