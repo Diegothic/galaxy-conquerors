@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.util.FloatUtils;
@@ -42,8 +43,8 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
     batch.begin();
-     title.font.draw(batch, "GALAXY CONQUERORS", 15, 220);
-     startText.font.draw(batch, "PRESS SPACE TO START", 100, 60); //epilepsja hardo
+    title.printText(batch, "GALAXY CONQUERORS", new Vector2(15,220));
+    startText.printText(batch, "PRESS SPACE TO START", new Vector2(100, 60));
     batch.end();
     }
 
