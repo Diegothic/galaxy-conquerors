@@ -7,5 +7,6 @@ public class EnemyExplosionEffect extends Effect {
                 16, 16, 7,
                 1.0f / 12.0f
         );
+        addSound("sounds/enemy_death.wav", true);
     }
 }

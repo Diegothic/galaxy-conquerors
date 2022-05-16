@@ -2,6 +2,7 @@ package com.galaxy.game.entity.projectile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.galaxy.game.entity.Shield;
 import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.graphics.AnimatedSprite;
@@ -22,8 +23,21 @@ public class PlayerProjectile extends Projectile {
                 collider.enabled = false;
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
+                spawnHitEffect();
+            }
+            if (other.getParent() instanceof Shield) {
+                collider.enabled = false;
+                getLevel().destroy(this);
+                spawnHitEffect();
             }
         });
+    }
+
+    private void spawnHitEffect() {
+        var hitEffect = new PlayerProjectileHitEffect();
+        hitEffect.position.set(position);
+        hitEffect.position.y += sprite.getHeight() / 2.0f;
+        getLevel().spawn(hitEffect);
     }
 
     @Override
@@ -40,15 +54,6 @@ public class PlayerProjectile extends Projectile {
                 position.y - sprite.getHeight() / 2.0f
         );
         sprite.draw(batch);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        var hitEffect = new PlayerProjectileHitEffect();
-        hitEffect.position.set(position);
-        hitEffect.position.y += sprite.getHeight() / 2.0f;
-        getLevel().spawn(hitEffect);
     }
 
     @Override

@@ -11,5 +11,6 @@ public class EnemyMuzzleFlashEffect extends Effect {
                 1.0f / 24.0f
         );
         attachTo(enemy, offset);
+        addSound("sounds/enemy_shoot.wav", true);
     }
 }
