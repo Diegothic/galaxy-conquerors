@@ -19,33 +19,32 @@ public class Enemy extends Entity {
     private final Texture texture;
     public final Sprite sprite;
 
-    private static final int MAX_OFFSET = 154;
-    private static final float MOVEMENT_CD = 0.2f;
-
+    private final int maxOffset = 154;
     private int currentOffset = 0;
+    private float movementCd = 0.2f;
     private float movementTimer = 0f;
-    private final Vector2 velocity;
+    private Vector2 velocity;
     private int movementDirection = 1;
     private int numberOfStepsDown = 0;
 
-    private static final float SHOOTING_CHANCE = 0.15f;
     private float shootingCD;
     private float shootingTimer = 0f;
+    private final float shootingChance = 0.1f;
     private final Vector2 shootingOffset;
 
     private final Random random;
 
-    public Enemy(int x, int y, String pathToSprite) {
+    public Enemy(int x, int y, String pathToSprate) {
         super(SortingLayer.ENEMIES);
         position.x = x;
         position.y = y;
-        texture = new Texture(Gdx.files.internal(pathToSprite));
+        texture = new Texture(Gdx.files.internal(pathToSprate));
         sprite = new Sprite(texture);
         velocity = new Vector2(2, 15);
 
         random = new Random();
 
-        shootingCD = random.nextFloat() * 3f + .2f;
+        shootingCD = random.nextFloat() * 3f + 1f;
         shootingOffset = new Vector2(0.0f, -8.0f);
     }
 
@@ -70,11 +69,11 @@ public class Enemy extends Entity {
     public void onUpdate(float delta) {
         movementTimer += delta;
         shootingTimer += delta;
-        if (movementTimer >= MOVEMENT_CD) {
+        if (movementTimer >= movementCd) {
             movementTimer = 0f;
             currentOffset += velocity.x;
             int isMovingDown = 0;
-            if (currentOffset == MAX_OFFSET || currentOffset == 0) {
+            if (currentOffset == maxOffset || currentOffset == 0) {
                 currentOffset = 0;
                 movementDirection *= -1;
                 numberOfStepsDown++;
@@ -88,10 +87,10 @@ public class Enemy extends Entity {
         }
 
         if (shootingTimer >= shootingCD) {
-            shootingCD = random.nextFloat() * 3f + .2f;
+            shootingCD = random.nextFloat() * 3f + 1f;
             shootingTimer = 0;
             float chance = random.nextFloat();
-            if (chance <= SHOOTING_CHANCE) {
+            if (chance <= shootingChance) {
                 shoot();
             }
         }

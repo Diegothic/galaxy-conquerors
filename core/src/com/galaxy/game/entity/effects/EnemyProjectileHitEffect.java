@@ -7,5 +7,6 @@ public class EnemyProjectileHitEffect extends Effect {
                 8, 8, 6,
                 1.0f / 24.0f
         );
+        addSound("sounds/enemy_hit.wav", true);
     }
 }
