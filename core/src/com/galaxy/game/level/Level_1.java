@@ -1,5 +1,6 @@
 package com.galaxy.game.level;
 
+import com.galaxy.game.entity.Background;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.entity.player.Player;
 
@@ -14,6 +15,9 @@ public class Level_1 extends GameLevel {
 
     public Level_1(int width, int height) {
         super(width, height);
+        var background = new Background();
+        background.position.set(213.0f,120.0f);
+        spawn(background);
         player = new Player();
         for (int i = 0; i < numberOfCollumns; i++) {
             for (int j = 0; j < numberOfRows; j++) {
