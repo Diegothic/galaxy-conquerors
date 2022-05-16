@@ -2,34 +2,27 @@ package com.galaxy.game.entity.projectile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
-import com.galaxy.game.entity.enemy.Enemy;
+import com.galaxy.game.entity.effects.EnemyProjectileHitEffect;
 import com.galaxy.game.entity.player.Player;
-import com.galaxy.game.entity.ship.Ship;
 import com.galaxy.game.graphics.AnimatedSprite;
 
-public class PlayerProjectile extends Projectile {
+public class EnemyProjectile extends Projectile {
 
     private final AnimatedSprite sprite;
 
-    public PlayerProjectile(float speed, float lifetime) {
-        super(0.0f, 1.0f, speed, new Vector2(4.0f, 6.0f), lifetime);
-        sprite = new AnimatedSprite("player/player_projectile_sheet.png",
-                8, 8, 7,
+    public EnemyProjectile() {
+        super(0.0f, -1.0f, 150.0f, new Vector2(4.0f, 6.0f), 3.0f);
+        sprite = new AnimatedSprite("enemy/enemy_projectile_sheet.png",
+                8, 8, 6,
                 1.0f / 12.0f
         );
         sprite.setLooping(true);
         setOnCollision(other -> {
-            if (other.getParent() instanceof Enemy) {
+            if (other.getParent() instanceof Player) {
                 collider.enabled = false;
-                getLevel().destroy(other.getParent());
+                Player player = (Player) other.getParent();
+                player.explode();
                 getLevel().destroy(this);
-            }else if(other.getParent() instanceof Ship){
-                collider.enabled = false;
-                Ship ship = (Ship) other.getParent();
-                ship.explode();
-                if(ship.isAlive)
-                    getLevel().destroy(this);
             }
         });
     }
@@ -53,9 +46,9 @@ public class PlayerProjectile extends Projectile {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        var hitEffect = new PlayerProjectileHitEffect();
+        var hitEffect = new EnemyProjectileHitEffect();
         hitEffect.position.set(position);
-        hitEffect.position.y += sprite.getHeight() / 2.0f;
+        hitEffect.position.y -= sprite.getHeight() / 2.0f;
         getLevel().spawn(hitEffect);
     }
 

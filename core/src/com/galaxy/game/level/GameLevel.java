@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class GameLevel {
+public abstract class GameLevel {
 
     private static final int INIT_ENTITY_CAPACITY = 128;
 
@@ -33,9 +33,7 @@ public class GameLevel {
         handleSpawnRequests();
     }
 
-    protected void initLevel() {
-
-    }
+    protected abstract void initLevel();
 
     public void update(float delta) {
         handleSpawnRequests();
@@ -47,6 +45,9 @@ public class GameLevel {
     }
 
     private void handleSpawnRequests() {
+        if (entitiesToSpawn.isEmpty()) {
+            return;
+        }
         spawnedEntities.addAll(entitiesToSpawn);
         entitiesToSpawn.clear();
         spawnedEntities.forEach(entity -> entity.onSpawn(this));
@@ -59,8 +60,8 @@ public class GameLevel {
 
     private void handleRemoveRequests() {
         entities.stream().filter(Entity::removalRequested).forEach(Entity::onDispose);
-        entities.removeIf(Entity::removalRequested);
         colliders.removeIf(Collider::removalRequested);
+        entities.removeIf(Entity::removalRequested);
     }
 
     public void render(SpriteBatch batch) {

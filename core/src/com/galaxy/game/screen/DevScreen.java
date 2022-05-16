@@ -2,14 +2,11 @@ package com.galaxy.game.screen;
 
 import com.badlogic.gdx.Screen;
 import com.galaxy.game.GalaxyConquerors;
-import com.galaxy.game.entity.Entity;
-import com.galaxy.game.entity.SortingLayer;
-import com.galaxy.game.entity.enemy.Enemy;
 
 public class DevScreen implements Screen {
 
     private final GalaxyConquerors game;
-    private Enemy enemy;
+
     public DevScreen(GalaxyConquerors game) {
         this.game = game;
     }

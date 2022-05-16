@@ -18,6 +18,7 @@ public class GameScreen implements Screen {
     private final GalaxyConquerors game;
     private final OrthographicCamera camera;
     private final GameLevel level;
+
     private boolean drawDebug;
     private boolean debugButtonPressed;
 
