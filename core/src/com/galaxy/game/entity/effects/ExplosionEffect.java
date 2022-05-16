@@ -7,5 +7,6 @@ public class ExplosionEffect extends Effect {
                 16, 16, 8,
                 1.0f / 12.0f
         );
+        addSound("sounds/explosion.wav", true);
     }
 }

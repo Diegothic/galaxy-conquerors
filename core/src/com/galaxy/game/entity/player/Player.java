@@ -2,6 +2,7 @@ package com.galaxy.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,6 +37,8 @@ public class Player extends Entity {
     private float elapsedTime;
     private final Random random;
 
+    private final Sound respawnSound;
+
     public Player() {
         super(SortingLayer.PLAYER);
         texture = new Texture(Gdx.files.internal("player/ship.png"));
@@ -61,6 +64,8 @@ public class Player extends Entity {
 
         elapsedTime = 0.0f;
         random = new Random();
+
+        respawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/player_respawn.wav"));
     }
 
     @Override
@@ -130,6 +135,7 @@ public class Player extends Entity {
         texture.dispose();
         flamesSprite.dispose();
         gunTexture.dispose();
+        shooting.dispose();
     }
 
     public void setBounds(float min, float max) {
@@ -152,6 +158,7 @@ public class Player extends Entity {
     }
 
     public void respawn() {
+        respawnSound.play();
         respawnedDuration = respawnedDurationBase;
         position.set(respawnPosition);
         movement.reset();

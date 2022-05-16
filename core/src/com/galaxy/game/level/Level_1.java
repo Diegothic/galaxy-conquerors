@@ -1,6 +1,10 @@
 package com.galaxy.game.level;
 
 import com.galaxy.game.entity.SortingLayer;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.galaxy.game.entity.Background;
+import com.galaxy.game.entity.Shield;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.entity.player.Player;
 import com.galaxy.game.entity.ship.Ship;
@@ -16,8 +20,19 @@ public class Level_1 extends GameLevel {
     private final int borderOffset = 24;
 //    private String seed = "o2o2o2o2/b3b3b3/g4g5g/rrrrrrrrrrrr";
     private String seed = "rrrrrrrrrrrr//bbbbbbbbbbbb/rgborgborgbo";
+
+    private final float shieldHealth = 100.0f;
+    private final float shieldCount = 5;
+    private final float shieldFirstX = 85.0f;
+
+    private final Music theme;
+
     public Level_1(int width, int height) {
         super(width, height);
+        theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/main_theme.wav"));
+        var background = new Background();
+        background.position.set(213.0f, 120.0f);
+        spawn(background);
         player = new Player();
         ship = new Ship(SortingLayer.SHIP);
         parseSeed();
@@ -25,8 +40,15 @@ public class Level_1 extends GameLevel {
 
     @Override
     protected void initLevel() {
+        theme.setLooping(true);
+        theme.play();
         spawn(player);
         spawn(ship);
+        for (int shieldInd = 0; shieldInd < shieldCount; ++shieldInd) {
+              var shield = new Shield(shieldHealth);
+              shield.position.set(shieldFirstX + shieldInd * 64.0f, 48.0f);
+              spawn(shield);
+        }
     }
 
     private void parseSeed(){
@@ -68,5 +90,11 @@ public class Level_1 extends GameLevel {
                 }
             }
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        theme.dispose();
     }
 }

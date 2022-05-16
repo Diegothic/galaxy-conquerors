@@ -2,6 +2,7 @@ package com.galaxy.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.effects.PlayerMuzzleFlashEffect;
 import com.galaxy.game.entity.effects.PlayerReloadEffect;
@@ -17,6 +18,10 @@ public class PlayerShooting {
     private final float projectileLifetime;
     private final Cooldown cooldown;
 
+    private boolean reloading;
+    private final Sound reloadSound;
+    private final Sound reloadCompleteSound;
+
     public PlayerShooting(Player player, Vector2 shootingPoint, float cooldown) {
         this.player = player;
         this.shootingPoint = new Vector2();
@@ -25,6 +30,10 @@ public class PlayerShooting {
         projectileSpeed = 200.0f;
         projectileLifetime = 3.0f;
         this.cooldown = new Cooldown(cooldown);
+
+        reloading = false;
+        reloadSound = Gdx.audio.newSound(Gdx.files.internal("sounds/player_reload.wav"));
+        reloadCompleteSound = Gdx.audio.newSound(Gdx.files.internal("sounds/player_reload_complete.wav"));
     }
 
     public void update(float delta) {
@@ -33,6 +42,10 @@ public class PlayerShooting {
             shoot();
         }
         cooldown.step(delta);
+        if (reloading && cooldown.isReady()) {
+            reloading = false;
+            reloadCompleteSound.play();
+        }
     }
 
     private void shoot() {
@@ -44,11 +57,21 @@ public class PlayerShooting {
                 player.position.y + shootingPoint.y
         );
         player.getLevel().spawn(projectile);
+
         var reloadBar = new PlayerReloadEffect(player, reloadBarOffset, cooldown.resetTime);
         player.getLevel().spawn(reloadBar);
+
+        reloading = true;
+        float pitch = 1.0f / (cooldown.resetTime);
+        reloadSound.play(1.0f, pitch, 0.0f);
     }
 
     private boolean isShootingKeyPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.SPACE);
+    }
+
+    public void dispose() {
+        reloadSound.dispose();
+        reloadCompleteSound.dispose();
     }
 }
