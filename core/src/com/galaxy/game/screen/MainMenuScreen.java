@@ -42,7 +42,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
     batch.begin();
-    title.font.draw(batch, "GALAXY CONQUERORS", 15, 220);
+     title.font.draw(batch, "GALAXY CONQUERORS", 15, 220);
      startText.font.draw(batch, "PRESS SPACE TO START", 100, 60); //epilepsja hardo
     batch.end();
     }
