@@ -1,5 +1,7 @@
 package com.galaxy.game.entity;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.collision.Collider;
@@ -20,6 +22,8 @@ public class Shield extends Entity {
     private float damagedCd;
     private final float damagedCdBase;
 
+    private final Sound blockSound;
+
     public Shield(float maxHealth) {
         super(SortingLayer.PLAYER);
         sprite = new AnimatedSprite("shield/shield_sheet.png",
@@ -37,6 +41,8 @@ public class Shield extends Entity {
         health = maxHealth;
         damagedCd = 0.0f;
         damagedCdBase = 0.3f;
+
+        blockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shield_block.wav"));
     }
 
     @Override
@@ -92,6 +98,8 @@ public class Shield extends Entity {
             health = 0.0f;
             explode();
             getLevel().destroy(this);
+        } else {
+            blockSound.play();
         }
     }
 

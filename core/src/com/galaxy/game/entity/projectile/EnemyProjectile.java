@@ -20,18 +20,27 @@ public class EnemyProjectile extends Projectile {
         sprite.setLooping(true);
         setOnCollision(other -> {
             if (other.getParent() instanceof Player) {
+                spawnHitEffect();
                 collider.enabled = false;
                 Player player = (Player) other.getParent();
                 player.explode();
                 getLevel().destroy(this);
             }
-            if(other.getParent() instanceof Shield){
+            if (other.getParent() instanceof Shield) {
+                spawnHitEffect();
                 collider.enabled = false;
                 Shield shield = (Shield) other.getParent();
                 shield.damage(20.0f);
                 getLevel().destroy(this);
             }
         });
+    }
+
+    private void spawnHitEffect() {
+        var hitEffect = new EnemyProjectileHitEffect();
+        hitEffect.position.set(position);
+        hitEffect.position.y -= sprite.getHeight() / 2.0f;
+        getLevel().spawn(hitEffect);
     }
 
     @Override
@@ -48,15 +57,6 @@ public class EnemyProjectile extends Projectile {
                 position.y - sprite.getHeight() / 2.0f
         );
         sprite.draw(batch);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        var hitEffect = new EnemyProjectileHitEffect();
-        hitEffect.position.set(position);
-        hitEffect.position.y -= sprite.getHeight() / 2.0f;
-        getLevel().spawn(hitEffect);
     }
 
     @Override

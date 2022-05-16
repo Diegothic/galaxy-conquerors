@@ -23,12 +23,21 @@ public class PlayerProjectile extends Projectile {
                 collider.enabled = false;
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
+                spawnHitEffect();
             }
             if (other.getParent() instanceof Shield) {
                 collider.enabled = false;
                 getLevel().destroy(this);
+                spawnHitEffect();
             }
         });
+    }
+
+    private void spawnHitEffect() {
+        var hitEffect = new PlayerProjectileHitEffect();
+        hitEffect.position.set(position);
+        hitEffect.position.y += sprite.getHeight() / 2.0f;
+        getLevel().spawn(hitEffect);
     }
 
     @Override
@@ -45,15 +54,6 @@ public class PlayerProjectile extends Projectile {
                 position.y - sprite.getHeight() / 2.0f
         );
         sprite.draw(batch);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        var hitEffect = new PlayerProjectileHitEffect();
-        hitEffect.position.set(position);
-        hitEffect.position.y += sprite.getHeight() / 2.0f;
-        getLevel().spawn(hitEffect);
     }
 
     @Override

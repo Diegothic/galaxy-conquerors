@@ -11,5 +11,6 @@ public class PlayerMuzzleFlashEffect extends Effect {
                 1.0f / 24.0f
         );
         attachTo(player, offset);
+        addSound("sounds/laser_shoot.wav", true);
     }
 }
