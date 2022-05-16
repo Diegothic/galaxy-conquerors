@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.entity.Shield;
 import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
 import com.galaxy.game.entity.enemy.Enemy;
-import com.galaxy.game.entity.player.Player;
 import com.galaxy.game.entity.ship.Ship;
 import com.galaxy.game.graphics.AnimatedSprite;
 
@@ -27,11 +26,11 @@ public class PlayerProjectile extends Projectile {
                 getLevel().destroy(this);
                 spawnHitEffect();
             }
-            if(other.getParent() instanceof Ship){
+            if (other.getParent() instanceof Ship) {
                 collider.enabled = false;
                 Ship ship = (Ship) other.getParent();
                 ship.explode();
-                if(ship.isAlive){
+                if (ship.isAlive) {
                     getLevel().destroy(this);
                     spawnHitEffect();
                 }
