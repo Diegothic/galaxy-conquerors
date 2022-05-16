@@ -2,6 +2,7 @@ package com.galaxy.game.entity.projectile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.galaxy.game.entity.Shield;
 import com.galaxy.game.entity.effects.PlayerProjectileHitEffect;
 import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.graphics.AnimatedSprite;
@@ -21,6 +22,10 @@ public class PlayerProjectile extends Projectile {
             if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
                 getLevel().destroy(other.getParent());
+                getLevel().destroy(this);
+            }
+            if (other.getParent() instanceof Shield) {
+                collider.enabled = false;
                 getLevel().destroy(this);
             }
         });
