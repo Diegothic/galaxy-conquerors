@@ -11,31 +11,38 @@ import java.util.function.Consumer;
 
 public class Collider extends Entity {
 
+    private final Entity parent;
     private final Rectangle box;
+    private final Vector2 offset;
     private Consumer<Collider> onCollisionFunction;
+
     public boolean enabled;
 
-    public Collider(Entity parent, Vector2 size, Vector2 offset) {
+    public Collider(Entity parent, float width, float height, float offsetX, float offsetY) {
         super(SortingLayer.COLLISION);
+        this.parent = parent;
         if (parent != null) {
-            attachTo(parent, offset);
             position.set(parent.position);
         }
+        offset = new Vector2(offsetX, offsetY);
         box = new Rectangle();
-        box.setWidth(size.x);
-        box.setHeight(size.y);
+        box.setWidth(width);
+        box.setHeight(height);
         box.setPosition(position.x + offset.x, position.y + offset.y);
         enabled = true;
     }
 
-    public Collider(Entity parent, Vector2 size) {
-        this(parent, size, new Vector2());
+    public Collider(Entity parent, float width, float height) {
+        this(parent, width, height, 0.0f, 0.0f);
     }
 
     @Override
     public void onUpdate(float delta) {
         super.onUpdate(delta);
-        box.setPosition(position.x - box.getWidth() / 2.0f, position.y - box.getHeight() / 2.0f);
+        if (parent != null) {
+            position.set(parent.position.x - box.getWidth() / 2.0f, parent.position.y - box.getHeight() / 2.0f);
+        }
+        box.setPosition(position.x + offset.x, position.y + offset.y);
     }
 
     @Override
@@ -48,6 +55,7 @@ public class Collider extends Entity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        enabled = false;
     }
 
     @Override
@@ -69,4 +77,9 @@ public class Collider extends Entity {
         }
         onCollisionFunction.accept(other);
     }
+
+    public Entity getParent() {
+        return parent;
+    }
+
 }
