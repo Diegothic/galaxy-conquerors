@@ -26,6 +26,7 @@ public class PlayerProjectile extends Projectile {
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
                 spawnHitEffect();
+            }
             if(other.getParent() instanceof Ship){
                 collider.enabled = false;
                 Ship ship = (Ship) other.getParent();
