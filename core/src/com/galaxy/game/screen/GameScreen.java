@@ -21,9 +21,6 @@ public class GameScreen implements Screen {
     private boolean drawDebug;
     private boolean debugButtonPressed;
 
-    private boolean drawDebug;
-    private boolean debugButtonPressed;
-
     public GameScreen(GalaxyConquerors game) {
         this.game = game;
         camera = new OrthographicCamera();
