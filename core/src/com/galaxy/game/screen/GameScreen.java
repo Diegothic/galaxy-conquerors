@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.level.GameLevel;
 import com.galaxy.game.level.Level_1;
+import com.galaxy.game.ui.UI;
 
 public class GameScreen implements Screen {
 
@@ -18,6 +19,7 @@ public class GameScreen implements Screen {
     private final GalaxyConquerors game;
     private final OrthographicCamera camera;
     private final GameLevel level;
+    private final UI ui;
 
     private boolean drawDebug;
     private boolean debugButtonPressed;
@@ -27,6 +29,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         level = new Level_1(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        ui = new UI(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, level);
         drawDebug = false;
     }
 
@@ -43,17 +46,23 @@ public class GameScreen implements Screen {
             drawDebug = !drawDebug;
         }
         level.update(delta);
+        ui.update(delta);
         ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         level.render(game.batch);
+        ui.render(game.batch);
         game.batch.end();
         if (drawDebug) {
             game.shapeRenderer.setProjectionMatrix(camera.combined);
             game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             level.renderDebug(game.shapeRenderer);
             game.shapeRenderer.end();
+        }
+        if (level.getGameMode().shouldFinish()) {
+            level.end();
+            //TODO::Jump to scoreboard after a delay
         }
     }
 

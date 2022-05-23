@@ -13,6 +13,7 @@ import java.util.List;
 public abstract class GameLevel {
 
     private static final int INIT_ENTITY_CAPACITY = 128;
+    private static final int MAX_LIVES = 3;
 
     public final Vector2 size;
     private final List<Entity> entities;
@@ -20,20 +21,30 @@ public abstract class GameLevel {
     private final List<Entity> spawnedEntities;
     private final List<Collider> colliders;
 
+    private final GameMode gameMode;
+
     public GameLevel(int width, int height) {
         this.size = new Vector2(width, height);
         entities = new ArrayList<>(INIT_ENTITY_CAPACITY);
         entitiesToSpawn = new ArrayList<>(INIT_ENTITY_CAPACITY);
         spawnedEntities = new ArrayList<>(INIT_ENTITY_CAPACITY);
         colliders = new ArrayList<>(INIT_ENTITY_CAPACITY);
+
+        gameMode = new GameMode(MAX_LIVES);
     }
 
-    public void start() {
+    public final void start() {
         initLevel();
         handleSpawnRequests();
     }
 
+    public final void end() {
+        endLevel();
+    }
+
     protected abstract void initLevel();
+
+    protected abstract void endLevel();
 
     public void update(float delta) {
         handleSpawnRequests();
@@ -90,5 +101,9 @@ public abstract class GameLevel {
             return;
         }
         entity.onDestroy();
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
     }
 }

@@ -52,6 +52,11 @@ public class Level_1 extends GameLevel {
     }
 
     @Override
+    protected void endLevel() {
+        theme.stop();
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
         theme.dispose();

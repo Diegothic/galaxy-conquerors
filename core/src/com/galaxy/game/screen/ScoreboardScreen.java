@@ -1,6 +1,7 @@
 package com.galaxy.game.screen;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 
 public class ScoreboardScreen implements Screen {
@@ -18,7 +19,7 @@ public class ScoreboardScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        ScreenUtils.clear(0, 0, 0, 1);
     }
 
     @Override

@@ -143,6 +143,7 @@ public class Player extends Entity {
     }
 
     public void explode() {
+        getLevel().getGameMode().decreaseLives();
         if (respawnedDuration > 0.0f) {
             return;
         }
@@ -150,7 +151,11 @@ public class Player extends Entity {
         explosion.position.set(position);
         explosion.rotation = random.nextFloat() * 360.0f;
         getLevel().spawn(explosion);
-        respawn();
+        if (!getLevel().getGameMode().isLost()) {
+            respawn();
+        } else {
+            getLevel().destroy(this);
+        }
     }
 
     public void setRespawnPosition(Vector2 newPosition) {
