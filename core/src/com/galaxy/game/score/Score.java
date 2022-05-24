@@ -13,25 +13,24 @@ import java.util.Comparator;
 //todo add enemy value in enemy class and add addPoints method in PlayerProjectile
 public class Score implements Comparable<Score>{
 
-    private int points;
-    private String time;
+    private static int points;
+    private static String time;
 
     public Score(){
         points = 0;
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
-    public Score(int points){
+    public Score(int points){ //dev
         this.points = points;
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
-    public void addPoints(Enemy enemy){
-        points += 100; //dev
-//        points += enemy.getRewardRatio() * 100;
+    public static void addPoints(Enemy enemy){
+        points += enemy.getEnemyValue();
     }
 
-    public int getPoints(){
+    public static int getPoints(){
         return points;
     }
 

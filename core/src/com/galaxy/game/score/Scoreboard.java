@@ -68,6 +68,13 @@ public class Scoreboard extends ArrayList<Score>{
                 return o1.compareTo(o2);
             }
         });
+        trimScoreboard(10);
         writeScoreToJson();
+    }
+
+    private void trimScoreboard(int size){
+        for (int i=size-1;i< scoreList.size();i++){
+            scoreList.remove(i);
+        }
     }
 }

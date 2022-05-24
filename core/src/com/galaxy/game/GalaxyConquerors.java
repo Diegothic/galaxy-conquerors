@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.galaxy.game.screen.DevScreen;
 import com.galaxy.game.screen.GameScreen;
+import com.galaxy.game.screen.ScoreboardScreen;
 
 public class GalaxyConquerors extends Game {
 
