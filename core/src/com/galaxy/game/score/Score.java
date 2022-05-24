@@ -17,12 +17,12 @@ public class Score {
 
     public Score(){
         points = 0;
-        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
     public Score(int points){
         this.points = points;
-        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
     public void addPoints(Enemy enemy){
