@@ -12,9 +12,11 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class Scoreboard {
+public class Scoreboard extends ArrayList<Score>{
 
     private List<Score> scoreList = new ArrayList<>();
 
@@ -60,6 +62,12 @@ public class Scoreboard {
 
     public void addScore(Score score){
         scoreList.add(score);
+        Collections.sort(scoreList, new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                return o1.compareTo(o2);
+            }
+        });
         writeScoreToJson();
     }
 }

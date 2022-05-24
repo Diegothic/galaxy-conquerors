@@ -8,9 +8,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Comparator;
 
 //todo add enemy value in enemy class and add addPoints method in PlayerProjectile
-public class Score {
+public class Score implements Comparable<Score>{
 
     private int points;
     private String time;
@@ -44,5 +45,13 @@ public class Score {
                 "points=" + points +
                 ", time='" + time + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(Score o) {
+        if (this.getPoints() < o.getPoints()) return 1;
+        else if (this.getPoints() == o.getPoints()) return 0;
+        else return -1;
     }
 }
