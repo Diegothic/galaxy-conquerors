@@ -34,7 +34,7 @@ public class SeedParser {
             if (enemyTypes.containsKey(ch)) {
                 int posX = x * ENEMY_WIDTH + BORDER_OFFSET + ENEMY_WIDTH_OFFSET;
                 int posY = baseY - y * ENEMY_WIDTH;
-                Enemy enemy = new Enemy(posX, posY, enemyTypes.get(ch));
+                Enemy enemy = new Enemy(posX, posY, y, enemyTypes.get(ch));
                 enemiesToSpawn.add(enemy);
                 x++;
             } else if (ch.equals('/')) {

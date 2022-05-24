@@ -32,11 +32,13 @@ public class Enemy extends Entity {
     private float shootingCD;
     private float shootingTimer = 0f;
     private final Vector2 shootingOffset;
+    private final int enemyValue;
 
     private final Random random;
 
-    public Enemy(int x, int y, String pathToSprite) {
+    public Enemy(int x, int y, int enemyValue, String pathToSprite) {
         super(SortingLayer.ENEMIES);
+        this.enemyValue = (enemyValue + 1) * 50;
         position.x = x;
         position.y = y;
         texture = new Texture(Gdx.files.internal(pathToSprite));
@@ -115,5 +117,9 @@ public class Enemy extends Entity {
                 position.y + shootingOffset.y
         );
         getLevel().spawn(projectile);
+    }
+
+    public int getEnemyValue(){
+        return enemyValue;
     }
 }

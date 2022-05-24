@@ -8,6 +8,7 @@ import com.galaxy.game.entity.enemy.Enemy;
 import com.galaxy.game.entity.player.Player;
 import com.galaxy.game.entity.ship.Ship;
 import com.galaxy.game.graphics.AnimatedSprite;
+import com.galaxy.game.score.Score;
 
 public class PlayerProjectile extends Projectile {
 
@@ -23,6 +24,7 @@ public class PlayerProjectile extends Projectile {
         setOnCollision(other -> {
             if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
+                Score.addPoints(((Enemy) (other.getParent())));
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
                 spawnHitEffect();
