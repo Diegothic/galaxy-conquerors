@@ -28,7 +28,7 @@ public class Enemy extends Entity {
     private int movementDirection = 1;
     private int numberOfStepsDown = 0;
 
-    private static final float SHOOTING_CHANCE = 0.15f;
+    private float SHOOTING_CHANCE = 0.15f;
     private float shootingCD;
     private float shootingTimer = 0f;
     private final Vector2 shootingOffset;
@@ -76,13 +76,26 @@ public class Enemy extends Entity {
             movementTimer = 0f;
             currentOffset += velocity.x;
             int isMovingDown = 0;
-            if (currentOffset == MAX_OFFSET || currentOffset == 0) {
+            if (currentOffset >= MAX_OFFSET || currentOffset <= 0) {
                 currentOffset = 0;
                 movementDirection *= -1;
                 numberOfStepsDown++;
                 int maxNumberOfStepsDown = 4;
                 if (numberOfStepsDown <= maxNumberOfStepsDown) {
                     isMovingDown = -1;
+                    switch (numberOfStepsDown){
+                        case 1:
+                        case 3:
+                            velocity.x++;
+                            break;
+                        case 2:
+                            SHOOTING_CHANCE *= 2;
+                            break;
+                        case 4:
+                            velocity.x = 6;
+                            SHOOTING_CHANCE *= 2;
+                            break;
+                    }
                 }
             }
             position.x += movementDirection * velocity.x;
