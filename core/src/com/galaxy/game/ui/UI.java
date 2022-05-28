@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.graphics.AnimatedSprite;
 import com.galaxy.game.level.GameLevel;
+import com.galaxy.game.score.Score;
+import com.galaxy.game.util.Font;
 
 public class UI {
 
@@ -17,6 +20,8 @@ public class UI {
     private final Texture hearthEmptyTexture;
     private final Sprite hearthEmptySprite;
 
+    private Font score;
+
     public UI(float width, float height, GameLevel level) {
         this.width = width;
         this.height = height;
@@ -27,7 +32,7 @@ public class UI {
                 1.0f / 12.0f
         );
         hearthFullSprite.setLooping(true);
-
+        score = new Font(12);
         hearthEmptyTexture = new Texture(Gdx.files.internal("other/hearth_empty.png"));
         hearthEmptySprite = new Sprite(hearthEmptyTexture);
     }
@@ -50,6 +55,7 @@ public class UI {
                 hearthFullSprite.draw(batch);
             }
         }
+        score.printText(batch, "SCORE: " + Score.getPoints(), new Vector2(5, 230));
     }
 
     public void dispose() {
