@@ -13,6 +13,7 @@ import com.galaxy.game.score.Score;
 public class PlayerProjectile extends Projectile {
 
     private final AnimatedSprite sprite;
+    public Score score = new Score(0);
 
     public PlayerProjectile(float speed, float lifetime) {
         super(0.0f, 1.0f, speed, new Vector2(4.0f, 6.0f), lifetime);
@@ -24,7 +25,7 @@ public class PlayerProjectile extends Projectile {
         setOnCollision(other -> {
             if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
-                Score.addPoints(((Enemy) (other.getParent())));
+                score.addPoints(((Enemy) (other.getParent())));
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
                 spawnHitEffect();

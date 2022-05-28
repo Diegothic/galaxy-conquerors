@@ -13,6 +13,9 @@ import com.galaxy.game.level.Level_1;
 import com.galaxy.game.score.Score;
 import com.galaxy.game.ui.UI;
 import com.galaxy.game.util.Font;
+import com.galaxy.game.util.GAME_STATE;
+
+import static com.galaxy.game.GalaxyConquerors.gameState;
 
 public class GameScreen implements Screen {
 
@@ -62,6 +65,9 @@ public class GameScreen implements Screen {
             game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             level.renderDebug(game.shapeRenderer);
             game.shapeRenderer.end();
+        }
+        if (level.getGameMode().getLives() == 0){
+            gameState = GAME_STATE.GAME_OVER;
         }
     }
 

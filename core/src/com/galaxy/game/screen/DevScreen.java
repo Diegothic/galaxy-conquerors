@@ -10,7 +10,7 @@ public class DevScreen implements Screen {
 
     public DevScreen(GalaxyConquerors game) {
         this.game = game;
-        Scoreboard scoreboard = new Scoreboard();
+//        Scoreboard scoreboard = new Scoreboard();
     }
 
     @Override

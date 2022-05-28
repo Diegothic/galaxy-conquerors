@@ -19,8 +19,10 @@ import java.util.List;
 public class Scoreboard extends ArrayList<Score>{
 
     private List<Score> scoreList = new ArrayList<>();
+    private FileHandle dir;
 
-    public Scoreboard(){
+    public Scoreboard(FileHandle dir){
+        this.dir = dir;
         loadScore();
     }
 
@@ -28,7 +30,7 @@ public class Scoreboard extends ArrayList<Score>{
         JsonReader jsonReader = new JsonReader();
         FileHandle jsonHandle;
         try {
-            jsonHandle = Gdx.files.local("scoreboard.json");
+            jsonHandle = dir;
             JsonValue jsonRaw = jsonReader.parse(jsonHandle);
             Type listType = new TypeToken<ArrayList<Score>>(){}.getType();
             scoreList = new Gson().fromJson(jsonRaw.toJson(JsonWriter.OutputType.json), listType);
@@ -40,6 +42,7 @@ public class Scoreboard extends ArrayList<Score>{
             }
             writeScoreToJson();
         }
+        System.out.println("xd");
     }
 
     public List<Score> getScoreList(){
@@ -49,7 +52,7 @@ public class Scoreboard extends ArrayList<Score>{
     public void writeScoreToJson(){
         String json = new Gson().toJson(scoreList);
         try {
-            File file = new File(Gdx.files.local("scoreboard.json").path());
+            File file = new File(dir.path());
             FileOutputStream outputStream = new FileOutputStream(file);
             byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
             outputStream.write(bytes);
@@ -60,8 +63,8 @@ public class Scoreboard extends ArrayList<Score>{
 
     }
 
-    public void addScore(Score score){
-        scoreList.add(score);
+    public void addScore(int score){
+        scoreList.add(new Score(score));
         Collections.sort(scoreList, new Comparator<Score>() {
             @Override
             public int compare(Score o1, Score o2) {

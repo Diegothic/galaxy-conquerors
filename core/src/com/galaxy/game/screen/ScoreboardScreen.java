@@ -26,7 +26,7 @@ public class ScoreboardScreen implements Screen {
     private Scoreboard scoreboard;
     private List<Score> scoreList;
 
-    public ScoreboardScreen(GalaxyConquerors game) {
+    public ScoreboardScreen(GalaxyConquerors game, Scoreboard scoreboard) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -34,9 +34,9 @@ public class ScoreboardScreen implements Screen {
         score = new Font(12);
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
-        scoreboard = new Scoreboard();
+        this.scoreboard = scoreboard;
         scoreList = new ArrayList<>();
-        //scoreboard.addScore(new Score(500));
+        scoreboard.addScore(Score.getPoints());
         scoreList = scoreboard.getScoreList();
         anyButtonText = new Font(30);
     }
@@ -55,7 +55,7 @@ public class ScoreboardScreen implements Screen {
         for (Score x: scoreList){
             score.printText(batch,
                             i + ": " +
-                                x.getPoints()
+                                x.getPointsNonStatic()
                                 + "   " + x.getTime(),
                                 new Vector2(25, 220 - (i*15)));
             i++;

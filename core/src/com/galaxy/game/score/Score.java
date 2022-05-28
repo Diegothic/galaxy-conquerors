@@ -13,25 +13,40 @@ import java.util.Comparator;
 //todo add enemy value in enemy class and add addPoints method in PlayerProjectile
 public class Score implements Comparable<Score>{
 
-    private static int points;
-    private static String time;
+    private int points;
+    private static int pointsStatic;
+    private String time;
 
     public Score(){
         points = 0;
-        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+        pointsStatic = 0;
+        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(0);
     }
 
     public Score(int points){ //dev
         this.points = points;
+        pointsStatic = points;
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
-    public static void addPoints(Enemy enemy){
+    public void addPoints(Enemy enemy){
         points += enemy.getEnemyValue();
+        pointsStatic += points;
+        addPointsStatic(enemy);
     }
 
+    public static void addPointsStatic(Enemy enemy){
+        pointsStatic += enemy.getEnemyValue();
+    }
+
+    public int getPointsNonStatic(){return points;} //shenanigans
+
     public static int getPoints(){
-        return points;
+        return pointsStatic;
+    }
+
+    public String getDate() {
+        return time;
     }
 
     public String getTime() {
@@ -49,8 +64,8 @@ public class Score implements Comparable<Score>{
 
     @Override
     public int compareTo(Score o) {
-        if (this.getPoints() < o.getPoints()) return 1;
-        else if (this.getPoints() == o.getPoints()) return 0;
+        if (this.getPointsNonStatic() < o.getPointsNonStatic()) return 1;
+        else if (this.getPointsNonStatic() == o.getPointsNonStatic()) return 0;
         else return -1;
     }
 }

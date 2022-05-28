@@ -20,7 +20,10 @@ public class UI {
     private final Texture hearthEmptyTexture;
     private final Sprite hearthEmptySprite;
 
+    private Score scor;
     private Font score;
+    private Font gameOver;
+    private Font gameOverAddInfo;
 
     public UI(float width, float height, GameLevel level) {
         this.width = width;
@@ -33,6 +36,9 @@ public class UI {
         );
         hearthFullSprite.setLooping(true);
         score = new Font(12);
+        gameOver = new Font(25);
+        scor = new Score(0);
+        gameOverAddInfo = new Font(15);
         hearthEmptyTexture = new Texture(Gdx.files.internal("other/hearth_empty.png"));
         hearthEmptySprite = new Sprite(hearthEmptyTexture);
     }
@@ -56,6 +62,11 @@ public class UI {
             }
         }
         score.printText(batch, "SCORE: " + Score.getPoints(), new Vector2(5, 230));
+
+        if (level.getGameMode().getLives() == 0){
+            gameOver.printText(batch, "GAME OVER", new Vector2(110, 150));
+            gameOverAddInfo.printText(batch, "press any key to quit", new Vector2(80, 105));
+        }
     }
 
     public void dispose() {
