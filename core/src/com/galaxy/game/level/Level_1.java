@@ -18,11 +18,9 @@ public class Level_1 extends GameLevel {
     private final Player player;
     private final Ship ship;
 
-    private final Music theme;
 
     public Level_1(int width, int height) {
         super(width, height);
-        theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/main_theme.wav"));
         var background = new Background();
         background.position.set(213.0f, 120.0f);
         spawn(background);
@@ -38,8 +36,6 @@ public class Level_1 extends GameLevel {
 
     @Override
     protected void initLevel() {
-        theme.setLooping(true);
-        theme.play();
         spawn(player);
         spawn(ship);
 
@@ -55,12 +51,10 @@ public class Level_1 extends GameLevel {
 
     @Override
     protected void endLevel() {
-        theme.stop();
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        theme.dispose();
     }
 }

@@ -3,6 +3,7 @@ package com.galaxy.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,6 +29,7 @@ public class GalaxyConquerors extends Game {
     FileHandle scoreboardDir;
     Scoreboard scoreboard;
 
+    private Music theme;
     private boolean isFullscreen;
     private boolean fullscreenButtonPressed;
 
@@ -39,6 +41,9 @@ public class GalaxyConquerors extends Game {
         scoreboardDir = Gdx.files.local("scoreboard.json");
         scoreboard = new Scoreboard(scoreboardDir);
         gameState = GAME_STATE.MENU;
+        theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/main_theme.wav"));
+        theme.setLooping(true);
+        theme.play();
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -47,13 +52,13 @@ public class GalaxyConquerors extends Game {
         super.render();
         switch (gameState){
             case MENU:
-                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
                     this.setScreen(new GameScreen(this));
                     gameState = GAME_STATE.IN_GAME;
                 }
                 break;
             case GAME_OVER:
-                if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+                if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
                     scoreboard.addScore(Score.getPoints());
                     this.setScreen(new ScoreboardScreen(this, scoreboard));
                     gameState = SCOREBOARD;
@@ -61,10 +66,12 @@ public class GalaxyConquerors extends Game {
                 }
                 break;
                 case SCOREBOARD:
-                    if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
+                        theme.stop();
                         this.setScreen(new GameScreen(this));
                         gameState = GAME_STATE.IN_GAME;
                     }
+                    theme.play();
                    break;
                 }
 
@@ -95,5 +102,6 @@ public class GalaxyConquerors extends Game {
     public void dispose() {
         batch.dispose();
         shapeRenderer.dispose();
+        theme.dispose();
     }
 }
