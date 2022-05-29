@@ -16,6 +16,8 @@ import com.galaxy.game.util.GAME_STATE;
 
 import java.io.File;
 
+import static com.galaxy.game.util.GAME_STATE.SCOREBOARD;
+
 public class GalaxyConquerors extends Game {
 
     public SpriteBatch batch;
@@ -51,13 +53,21 @@ public class GalaxyConquerors extends Game {
                 }
                 break;
             case GAME_OVER:
-                if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
+                if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
                     scoreboard.addScore(Score.getPoints());
                     this.setScreen(new ScoreboardScreen(this, scoreboard));
-                    gameState = GAME_STATE.SCOREBOARD;
-                break;
+                    gameState = SCOREBOARD;
+
                 }
-        }
+                break;
+                case SCOREBOARD:
+                    if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
+                        this.setScreen(new GameScreen(this));
+                        gameState = GAME_STATE.IN_GAME;
+                    }
+                   break;
+                }
+
         handleExit();
         handleFullscreen();
     }

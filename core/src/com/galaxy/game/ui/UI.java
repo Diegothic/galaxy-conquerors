@@ -65,7 +65,7 @@ public class UI {
 
         if (level.getGameMode().getLives() == 0){
             gameOver.printText(batch, "GAME OVER", new Vector2(110, 150));
-            gameOverAddInfo.printText(batch, "press any key to quit", new Vector2(80, 105));
+            gameOverAddInfo.printText(batch, "press enter to quit", new Vector2(85, 105));
         }
     }
 
