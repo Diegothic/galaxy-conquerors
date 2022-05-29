@@ -13,7 +13,7 @@ import com.galaxy.game.score.Score;
 public class PlayerProjectile extends Projectile {
 
     private final AnimatedSprite sprite;
-    public Score score = new Score(0);
+    public Score score = new Score(Score.getPoints());
 
     public PlayerProjectile(float speed, float lifetime) {
         super(0.0f, 1.0f, speed, new Vector2(4.0f, 6.0f), lifetime);

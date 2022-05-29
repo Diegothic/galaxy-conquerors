@@ -31,13 +31,12 @@ public class Score implements Comparable<Score>{
 
     public void addPoints(Enemy enemy){
         points += enemy.getEnemyValue();
-        pointsStatic += points;
-        addPointsStatic(enemy);
-    }
-
-    public static void addPointsStatic(Enemy enemy){
         pointsStatic += enemy.getEnemyValue();
     }
+
+//    public static void addPointsStatic(Enemy enemy){
+//        pointsStatic += enemy.getEnemyValue();
+//    }
 
     public int getPointsNonStatic(){return points;} //shenanigans
 

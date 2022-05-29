@@ -36,7 +36,6 @@ public class ScoreboardScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         this.scoreboard = scoreboard;
         scoreList = new ArrayList<>();
-        scoreboard.addScore(Score.getPoints());
         scoreList = scoreboard.getScoreList();
         anyButtonText = new Font(30);
     }
