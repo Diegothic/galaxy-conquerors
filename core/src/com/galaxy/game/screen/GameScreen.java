@@ -11,7 +11,7 @@ import com.galaxy.game.level.GameLevel;
 import com.galaxy.game.level.Level_1;
 import com.galaxy.game.ui.UI;
 import com.galaxy.game.util.Font;
-import com.galaxy.game.util.GAME_STATE;
+import com.galaxy.game.util.GameState;
 
 import static com.galaxy.game.GalaxyConquerors.gameState;
 
@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
             game.shapeRenderer.end();
         }
         if (level.getGameMode().shouldFinish()) {
-            gameState = GAME_STATE.GAME_OVER;
+            gameState = GameState.GAME_OVER;
         }
     }
 

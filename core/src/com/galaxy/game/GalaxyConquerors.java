@@ -12,16 +12,16 @@ import com.galaxy.game.score.Scoreboard;
 import com.galaxy.game.screen.GameScreen;
 import com.galaxy.game.screen.MainMenuScreen;
 import com.galaxy.game.screen.ScoreboardScreen;
-import com.galaxy.game.util.GAME_STATE;
+import com.galaxy.game.util.GameState;
 
-import static com.galaxy.game.util.GAME_STATE.SCOREBOARD;
+import static com.galaxy.game.util.GameState.SCOREBOARD;
 
 public class GalaxyConquerors extends Game {
 
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
 
-    public static GAME_STATE gameState;
+    public static GameState gameState;
 
     FileHandle scoreboardDir;
     Scoreboard scoreboard;
@@ -37,7 +37,7 @@ public class GalaxyConquerors extends Game {
         isFullscreen = false;
         scoreboardDir = Gdx.files.local("scoreboard.json");
         scoreboard = new Scoreboard(scoreboardDir);
-        gameState = GAME_STATE.MENU;
+        gameState = GameState.MENU;
         theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/main_theme.wav"));
         theme.setLooping(true);
         theme.play();
@@ -51,7 +51,7 @@ public class GalaxyConquerors extends Game {
             case MENU:
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
                     this.setScreen(new GameScreen(this));
-                    gameState = GAME_STATE.IN_GAME;
+                    gameState = GameState.IN_GAME;
                 }
                 break;
             case GAME_OVER:
@@ -66,7 +66,7 @@ public class GalaxyConquerors extends Game {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
                     theme.stop();
                     this.setScreen(new GameScreen(this));
-                    gameState = GAME_STATE.IN_GAME;
+                    gameState = GameState.IN_GAME;
                 }
                 theme.play();
                 break;
