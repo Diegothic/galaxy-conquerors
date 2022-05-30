@@ -5,12 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.level.GameLevel;
 import com.galaxy.game.level.Level_1;
-import com.galaxy.game.score.Score;
 import com.galaxy.game.ui.UI;
 import com.galaxy.game.util.Font;
 import com.galaxy.game.util.GAME_STATE;
@@ -66,7 +64,7 @@ public class GameScreen implements Screen {
             level.renderDebug(game.shapeRenderer);
             game.shapeRenderer.end();
         }
-        if (level.getGameMode().getLives() == 0){
+        if (level.getGameMode().shouldFinish()) {
             gameState = GAME_STATE.GAME_OVER;
         }
     }

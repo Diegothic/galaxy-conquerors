@@ -26,6 +26,7 @@ public class PlayerProjectile extends Projectile {
             if (other.getParent() instanceof Enemy) {
                 collider.enabled = false;
                 score.addPoints(((Enemy) (other.getParent())));
+                getLevel().getGameMode().decreaseAliveEnemies();
                 getLevel().destroy(other.getParent());
                 getLevel().destroy(this);
                 spawnHitEffect();

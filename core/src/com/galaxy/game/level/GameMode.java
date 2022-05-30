@@ -8,10 +8,13 @@ public class GameMode {
     private boolean finished;
     private boolean isLost;
 
+    private int aliveEnemies;
+
     public GameMode(int maxLives) {
         this.maxLives = maxLives;
         lives = maxLives;
 
+        finished = false;
         isLost = false;
     }
 
@@ -36,6 +39,21 @@ public class GameMode {
         if (lives <= 0) {
             lives = 0;
             isLost = true;
+            finished = true;
+        }
+    }
+
+    public void setAliveEnemies(int aliveEnemies) {
+        if (aliveEnemies < 0) {
+            return;
+        }
+        this.aliveEnemies = aliveEnemies;
+    }
+
+    public void decreaseAliveEnemies() {
+        aliveEnemies--;
+        if (aliveEnemies <= 0) {
+            aliveEnemies = 0;
             finished = true;
         }
     }

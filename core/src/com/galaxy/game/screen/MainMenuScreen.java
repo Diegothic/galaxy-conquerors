@@ -44,7 +44,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
     batch.begin();
     title.printText(batch, "GALAXY CONQUERORS", new Vector2(15,220));
-    startText.printText(batch, "PRESS SPACE TO START", new Vector2(100, 60));
+    startText.printText(batch, "PRESS ANY KEY TO START", new Vector2(100, 60));
     batch.end();
     }
 

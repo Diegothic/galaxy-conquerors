@@ -63,9 +63,9 @@ public class UI {
         }
         score.printText(batch, "SCORE: " + Score.getPoints(), new Vector2(5, 230));
 
-        if (level.getGameMode().getLives() == 0){
+        if (level.getGameMode().shouldFinish()){
             gameOver.printText(batch, "GAME OVER", new Vector2(110, 150));
-            gameOverAddInfo.printText(batch, "press enter to quit", new Vector2(85, 105));
+            gameOverAddInfo.printText(batch, "press any key to quit", new Vector2(85, 105));
         }
     }
 

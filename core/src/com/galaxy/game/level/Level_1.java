@@ -1,7 +1,5 @@
 package com.galaxy.game.level;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.galaxy.game.entity.Background;
 import com.galaxy.game.entity.Shield;
 import com.galaxy.game.entity.SortingLayer;
@@ -29,6 +27,7 @@ public class Level_1 extends GameLevel {
 
         SeedParser seedParser = new SeedParser(SEED);
         List<Enemy> enemiesToSpawn = seedParser.parse();
+        getGameMode().setAliveEnemies(seedParser.getEnemyCount());
         for (var enemy : enemiesToSpawn) {
             spawn(enemy);
         }

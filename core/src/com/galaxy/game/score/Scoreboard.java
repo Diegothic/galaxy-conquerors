@@ -42,7 +42,6 @@ public class Scoreboard extends ArrayList<Score>{
             }
             writeScoreToJson();
         }
-        System.out.println("xd");
     }
 
     public List<Score> getScoreList(){

@@ -9,13 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.galaxy.game.score.Score;
 import com.galaxy.game.score.Scoreboard;
-import com.galaxy.game.screen.DevScreen;
 import com.galaxy.game.screen.GameScreen;
 import com.galaxy.game.screen.MainMenuScreen;
 import com.galaxy.game.screen.ScoreboardScreen;
 import com.galaxy.game.util.GAME_STATE;
-
-import java.io.File;
 
 import static com.galaxy.game.util.GAME_STATE.SCOREBOARD;
 
@@ -50,30 +47,30 @@ public class GalaxyConquerors extends Game {
     @Override
     public void render() {
         super.render();
-        switch (gameState){
+        switch (gameState) {
             case MENU:
-                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
                     this.setScreen(new GameScreen(this));
                     gameState = GAME_STATE.IN_GAME;
                 }
                 break;
             case GAME_OVER:
-                if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
                     scoreboard.addScore(Score.getPoints());
                     this.setScreen(new ScoreboardScreen(this, scoreboard));
                     gameState = SCOREBOARD;
 
                 }
                 break;
-                case SCOREBOARD:
-                    if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
-                        theme.stop();
-                        this.setScreen(new GameScreen(this));
-                        gameState = GAME_STATE.IN_GAME;
-                    }
-                    theme.play();
-                   break;
+            case SCOREBOARD:
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+                    theme.stop();
+                    this.setScreen(new GameScreen(this));
+                    gameState = GAME_STATE.IN_GAME;
                 }
+                theme.play();
+                break;
+        }
 
         handleExit();
         handleFullscreen();
