@@ -83,7 +83,7 @@ public class Enemy extends Entity {
                 int maxNumberOfStepsDown = 4;
                 if (numberOfStepsDown <= maxNumberOfStepsDown) {
                     isMovingDown = -1;
-                    switch (numberOfStepsDown){
+                    switch (numberOfStepsDown) {
                         case 1:
                         case 3:
                             velocity.x++;
@@ -132,7 +132,7 @@ public class Enemy extends Entity {
         getLevel().spawn(projectile);
     }
 
-    public int getEnemyValue(){
+    public int getEnemyValue() {
         return enemyValue;
     }
 }

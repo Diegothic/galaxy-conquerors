@@ -1,8 +1,11 @@
 package com.galaxy.game.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
@@ -19,12 +22,16 @@ public class ScoreboardScreen implements Screen {
     private static final int VIEWPORT_WIDTH = 426;
     private static final int VIEWPORT_HEIGHT = 240;
 
-    private Font title, score, anyButtonText;
-    private SpriteBatch batch;
+    private final Font title;
+    private final Font score;
+    private final Font anyButtonText;
     private final OrthographicCamera camera;
 
-    private Scoreboard scoreboard;
     private List<Score> scoreList;
+
+    private final Texture backgroundTexture;
+    private final Sprite background;
+    private float elapsed;
 
     public ScoreboardScreen(GalaxyConquerors game, Scoreboard scoreboard) {
         this.game = game;
@@ -32,12 +39,17 @@ public class ScoreboardScreen implements Screen {
         camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         title = new Font(25);
         score = new Font(12);
-        batch = new SpriteBatch();
-        batch.setProjectionMatrix(camera.combined);
-        this.scoreboard = scoreboard;
         scoreList = new ArrayList<>();
         scoreList = scoreboard.getScoreList();
-        anyButtonText = new Font(30);
+        anyButtonText = new Font(20);
+
+        backgroundTexture = new Texture(Gdx.files.internal("other/background_galaxy_2.png"));
+        background = new Sprite(backgroundTexture);
+        background.setPosition(
+                VIEWPORT_WIDTH / 2.0f - background.getWidth() / 2.0f,
+                VIEWPORT_HEIGHT / 2.0f - background.getHeight() / 2.0f
+        );
+        elapsed = 0.0f;
     }
 
     @Override
@@ -47,20 +59,33 @@ public class ScoreboardScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        elapsed += delta;
         ScreenUtils.clear(0, 0, 0, 1);
-        batch.begin();
-        title.printText(batch, "Scoreboard", new Vector2(95, 225));
-        int i=1;
-        for (Score x: scoreList){
-            score.printText(batch,
-                            i + ": " +
-                                x.getPointsNonStatic()
-                                + "   " + x.getTime(),
-                                new Vector2(25, 220 - (i*15)));
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.begin();
+        background.setRotation(elapsed);
+        background.draw(game.batch);
+        title.printText(game.batch, "SCOREBOARD", new Vector2(105, 225));
+        int i = 1;
+        for (var score : scoreList) {
+            var textPos = new Vector2(25, 210 - (i * 15));
+            if (score.getPointsNonStatic() == 0) {
+                this.score.printText(game.batch,
+                        i + ": " + "--------------------------------------",
+                        textPos);
+            } else {
+                this.score.printText(game.batch,
+                        i + ": " + score.getPointsNonStatic() + "   " + score.getTime(),
+                        textPos);
+            }
             i++;
         }
-        anyButtonText.printText(batch, "PRESS ANY KEY", new Vector2(45, 35));
-        batch.end();
+        anyButtonText.printText(game.batch, "PRESS ANY KEY TO TRY AGAIN", new Vector2(25, 35));
+        game.batch.end();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            game.setScreen(new GameScreen(game));
+        }
     }
 
     @Override
@@ -88,6 +113,6 @@ public class ScoreboardScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        backgroundTexture.dispose();
     }
 }

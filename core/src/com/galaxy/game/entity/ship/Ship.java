@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.galaxy.game.collision.Collider;
 import com.galaxy.game.entity.Entity;
-import com.galaxy.game.entity.effects.EnemyExplosionEffect;
 import com.galaxy.game.entity.effects.ExplosionEffect;
 import com.galaxy.game.level.GameLevel;
 
@@ -22,7 +21,6 @@ public class Ship extends Entity {
     private static final float MOVEMENT_SPEED = 100.0f;
 
     private float maxOffset;
-    private float currentOffset = 0;
     private float changeDirectionTimer = 0f;
     private float maxDirectionTimer;
     private int movementDirection = 1;
@@ -32,6 +30,7 @@ public class Ship extends Entity {
     private float respawnDelay;
 
     private final Random random;
+
     public Ship(int sortingLayer) {
         super(sortingLayer);
         texture = new Texture(Gdx.files.internal("other/big_ship.png"));
@@ -56,7 +55,7 @@ public class Ship extends Entity {
     @Override
     public void onRender(SpriteBatch batch) {
         super.onRender(batch);
-        if(isAlive) {
+        if (isAlive) {
             sprite.setPosition(
                     position.x - sprite.getWidth() / 2,
                     position.y - sprite.getHeight() / 2
@@ -68,7 +67,7 @@ public class Ship extends Entity {
     @Override
     public void onUpdate(float delta) {
         super.onUpdate(delta);
-        if(isAlive) {
+        if (isAlive) {
             changeDirectionTimer += delta;
             if (changeDirectionTimer >= maxDirectionTimer ||
                     position.x - sprite.getWidth() / 2 + MOVEMENT_SPEED * delta * movementDirection <= 0 ||
@@ -78,9 +77,9 @@ public class Ship extends Entity {
                 maxDirectionTimer = random.nextFloat() * 3.5f + .5f;
             }
             position.x += MOVEMENT_SPEED * delta * movementDirection;
-        }else {
+        } else {
             respawnCounter += delta;
-            if(respawnCounter >= respawnDelay){
+            if (respawnCounter >= respawnDelay) {
                 respawnDelay = random.nextFloat() * 10.0f + 5.0f;
                 respawnCounter = 0.0f;
                 respawn();
@@ -94,14 +93,14 @@ public class Ship extends Entity {
         texture.dispose();
     }
 
-    private void respawn(){
+    private void respawn() {
         isAlive = true;
         float levelWidth = getLevel().size.x;
         position.set(levelWidth / 2, 220);
     }
 
-    public void explode(){
-        if(isAlive) {
+    public void explode() {
+        if (isAlive) {
             var explosion = new ExplosionEffect();
             explosion.position.set(position);
             explosion.rotation = random.nextFloat() * 360.0f;

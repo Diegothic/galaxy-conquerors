@@ -11,19 +11,21 @@ import java.util.List;
 
 public class Level_1 extends GameLevel {
 
-    private static final String SEED = "rrrrrrrrrrrr//bbbbbbbbbbbb/rgborgborgbo";
-
-    private final Player player;
-    private final Ship ship;
-
+    private static final String SEED = "oorrrrrrrroo//bbbbbbbbbbbb/rgborgborgbo";
 
     public Level_1(int width, int height) {
         super(width, height);
+    }
+
+    @Override
+    protected void initLevel() {
         var background = new Background();
         background.position.set(213.0f, 120.0f);
         spawn(background);
-        player = new Player();
-        ship = new Ship(SortingLayer.SHIP);
+        var player = new Player();
+        var ship = new Ship(SortingLayer.SHIP);
+        spawn(player);
+        spawn(ship);
 
         SeedParser seedParser = new SeedParser(SEED);
         List<Enemy> enemiesToSpawn = seedParser.parse();
@@ -31,12 +33,6 @@ public class Level_1 extends GameLevel {
         for (var enemy : enemiesToSpawn) {
             spawn(enemy);
         }
-    }
-
-    @Override
-    protected void initLevel() {
-        spawn(player);
-        spawn(ship);
 
         float shieldHealth = 100.0f;
         float shieldCount = 5;

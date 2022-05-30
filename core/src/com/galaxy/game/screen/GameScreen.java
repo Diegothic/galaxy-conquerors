@@ -9,11 +9,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.galaxy.game.GalaxyConquerors;
 import com.galaxy.game.level.GameLevel;
 import com.galaxy.game.level.Level_1;
+import com.galaxy.game.score.Score;
 import com.galaxy.game.ui.UI;
-import com.galaxy.game.util.Font;
-import com.galaxy.game.util.GameState;
-
-import static com.galaxy.game.GalaxyConquerors.gameState;
 
 public class GameScreen implements Screen {
 
@@ -23,8 +20,7 @@ public class GameScreen implements Screen {
     private final GalaxyConquerors game;
     private final OrthographicCamera camera;
     private final GameLevel level;
-    private Font score;
-    private UI ui;
+    private final UI ui;
 
     private boolean drawDebug;
     private boolean debugButtonPressed;
@@ -40,6 +36,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Score.resetPoints();
         level.start();
     }
 
@@ -51,6 +48,7 @@ public class GameScreen implements Screen {
             drawDebug = !drawDebug;
         }
         level.update(delta);
+        ui.update(delta);
         ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
@@ -65,8 +63,16 @@ public class GameScreen implements Screen {
             game.shapeRenderer.end();
         }
         if (level.getGameMode().shouldFinish()) {
-            gameState = GameState.GAME_OVER;
+            if (level.getGameMode().isLost() && game.theme.isPlaying()) {
+                game.theme.pause();
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+                game.scoreboard.addScore(Score.getPoints());
+                game.theme.play();
+                game.setScreen(new ScoreboardScreen(game, game.scoreboard));
+            }
         }
+
     }
 
     @Override

@@ -9,20 +9,19 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Font {
 
-    private FreeTypeFontGenerator fontGenerator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
     public BitmapFont font;
-    public Font(int size){
-        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/invasion2000.ttf"));
-        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+    public Font(int size) {
+        var fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/invasion2000.ttf"));
+        var fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = size;
         fontParameter.borderColor = Color.BLACK;
         fontParameter.color = Color.WHITE;
-        fontParameter.borderWidth = 5;
+        fontParameter.borderWidth = 1;
         font = fontGenerator.generateFont(fontParameter);
     }
 
-    public void printText(Batch batch, String text, Vector2 position){
+    public void printText(Batch batch, String text, Vector2 position) {
         font.draw(batch, text, position.x, position.y);
     }
 }
